@@ -1,0 +1,74 @@
+.tb-user-container {
+  position: relative;
+}
+
+.tb-user-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 200px;
+  background: #061F1E;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tb-user-dropdown.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.tb-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.tb-dd-item:hover {
+  background: rgba(20, 184, 166, 0.1);
+  color: #fff;
+}
+
+.tb-dd-item svg {
+  opacity: 0.6;
+}
+
+.tb-dd-item:hover svg {
+  opacity: 1;
+  color: var(--primary-mid);
+}
+
+.tb-dd-item.danger-item {
+  color: #FCA5A5;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 0 8px 8px;
+}
+
+.tb-dd-item.danger-item:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #FF8A8A;
+}
+
+.tb-dd-item.danger-item:hover svg {
+  color: #FF8A8A;
+}

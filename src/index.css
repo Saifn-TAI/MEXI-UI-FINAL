@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --canvas: #F5F7F7;
   --surface: #FFFFFF;
   --surface-2: #EEF3F3;
@@ -772,7 +772,6 @@ body {
 
 .psc:hover {
   box-shadow: var(--float)
-}
 }
 
 .psc.rank-1 {
@@ -5075,7 +5074,7 @@ body {
   background: var(--accent-5);
   border: 1.5px solid var(--primary-bd);
   border-radius: var(--r-pill);
-  padding: 3px 10px;
+  padding: 3px 16px;
   cursor: pointer;
   transition: all .12s;
   white-space: nowrap
@@ -5426,7 +5425,6 @@ body {
   background: var(--surface)
 }
 
-</style>
 
 /* -- MODAL BASE -- */
 .modal-overlay {
@@ -5557,4 +5555,39 @@ body {
 
 .btn-save:hover {
   box-shadow: var(--float);
+}
+
+/* -- INTEL PANEL FULLSCREEN -- */
+.ip-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  background: rgba(6, 20, 20, .45);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.ip-fullscreen-overlay.open {
+  display: flex !important;
+}
+
+.ip-fullscreen-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--float-xl);
+  width: 100%;
+  max-width: 1000px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideBottom .3s ease;
+}
+
+@keyframes slideBottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

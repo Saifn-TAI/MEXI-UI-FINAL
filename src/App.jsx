@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Topbar from './components/Topbar';
-import LeftPanel from './components/LeftPanel';
-import AskMexi from './components/AskMexi';
-import IntelligencePanel from './components/IntelligencePanel';
-import { AllSignalsOverlay, SettingsOverlay } from './components/Overlays';
-import ExecBriefModal from './components/ExecBriefModal';
+import Topbar from './components/Topbar/Topbar';
+import LeftPanel from './components/LeftPanel/LeftPanel';
+import AskMexi from './components/AskMexi/AskMexi';
+import IntelligencePanel from './components/IntelligencePanel/IntelligencePanel';
+import { AllSignalsOverlay, SettingsOverlay, ProfileOverlay } from './components/Overlays';
+import ExecBriefModal from './components/ExecBriefModal/ExecBriefModal';
+import IPContent from './components/IntelligencePanel/IPContent';
+import LoginPage from './components/Login/LoginPage';
+import SignupPage from './components/Login/SignupPage';
+import LoadingScreen from './components/Login/LoadingScreen';
 import { useApp } from './context/AppContext';
 import { ROLES, SIGNALS } from './data/mockData';
 
 export default function App() {
   const { setShowExecBrief } = useApp();
+  const [authStatus, setAuthStatus] = useState('login'); // 'login' | 'loading' | 'dashboard'
+  const [userEmail, setUserEmail] = useState('');
+  
   const [currentRole, setCurrentRole] = useState('CEO');
   const [leftPanelOpen, setLeftPanelOpen] = useState(true);
   const [currentPanelSig, setCurrentPanelSig] = useState(null);
@@ -20,6 +27,7 @@ export default function App() {
   // Overlay states
   const [allSignalsOpen, setAllSignalsOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [fsOverlayOpen, setFsOverlayOpen] = useState(false);
 
   // Watchlist state
@@ -100,9 +108,48 @@ export default function App() {
   const leftW = leftPanelOpen ? '340px' : '0px';
   const rightW = panelMode === 'expanded' ? '480px' : '0px';
 
+  if (authStatus === 'login') {
+    return (
+      <LoginPage 
+        onLoginSuccess={(email) => {
+          setUserEmail(email);
+          setAuthStatus('loading');
+        }} 
+        onGoToSignup={() => setAuthStatus('signup')}
+      />
+    );
+  }
+
+  if (authStatus === 'signup') {
+    return (
+      <SignupPage 
+        onSignupSuccess={(email) => {
+          setUserEmail(email);
+          setAuthStatus('loading');
+        }} 
+        onGoToLogin={() => setAuthStatus('login')}
+      />
+    );
+  }
+
+  if (authStatus === 'loading') {
+    return (
+      <LoadingScreen 
+        onLoadingComplete={() => setAuthStatus('dashboard')} 
+      />
+    );
+  }
+
+  // Fade-in effect for dashboard
+  const dashboardStyle = {
+    animation: 'fadeUp 0.6s ease',
+    opacity: 1, 
+    gridTemplateColumns: `${leftW} 1fr ${rightW}`
+  };
+
   return (
     <>
-      <div className={`shell ${!leftPanelOpen ? 'no-panel' : ''} ${panelMode === 'expanded' ? 'panel-expanded' : ''}`} id="shell" style={{ gridTemplateColumns: `${leftW} 1fr ${rightW}` }}>
+      <div className={`shell ${!leftPanelOpen ? 'no-panel' : ''} ${panelMode === 'expanded' ? 'panel-expanded' : ''}`} id="shell" style={dashboardStyle}>
 
         <Topbar
           leftPanelOpen={leftPanelOpen}
@@ -111,6 +158,11 @@ export default function App() {
           roleData={roleData}
           showToast={showToast}
           openSettings={() => setSettingsOpen(true)}
+          openProfile={() => setProfileOpen(true)}
+          onSignOut={() => {
+            setUserEmail('');
+            setAuthStatus('login');
+          }}
         />
 
         <LeftPanel
@@ -119,7 +171,7 @@ export default function App() {
           SIGNALS={SIGNALS}
           openPanel={openPanel}
           showToast={showToast}
-          openBrief={() => setShowExecBrief(true)}
+          openBrief={() => { setShowExecBrief(true); showToast('Opening Executive Brief...'); }}
           openAllSignalsPanel={() => setAllSignalsOpen(true)}
           watchlist={watchlist}
           unfollowEntity={unfollowEntity}
@@ -147,6 +199,7 @@ export default function App() {
           followFromChat={followFromChat}
         />
 
+        <ExecBriefModal />
       </div>
 
       {!leftPanelOpen && (
@@ -164,34 +217,50 @@ export default function App() {
         openPanel={openPanel}
       />
 
-      <ExecBriefModal />
-
       <SettingsOverlay
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
         showToast={showToast}
       />
 
+      <ProfileOverlay
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        roleData={roleData}
+        userEmail={userEmail}
+      />
+
       {/* Full-Screen Overlay for Intelligence Panel */}
       {fsOverlayOpen && currentPanelSig && (
         <div className="ip-fullscreen-overlay open" onClick={() => setFsOverlayOpen(false)}>
           <div className="ip-fullscreen-card" onClick={e => e.stopPropagation()}>
-            {/* Copying IntelligencePanel's header look here to simply display */}
-            <div className="ip-hdr" style={{ flexShrink: 0 }}>
+            <div className="ip-hdr" style={{ flexShrink: 0, padding: '16px 20px' }}>
               <div className="ip-hdr-top">
                 <div className="ip-hdr-left">
-                  <div className="ip-sig-name">{SIGNALS[currentPanelSig].name}</div>
-                  <div className="ip-sig-id">{currentPanelSig} · {SIGNALS[currentPanelSig].proc}</div>
+                  <div className="ip-sig-id" style={{fontSize:'12px', color:'var(--primary)'}}>{currentPanelSig} · {SIGNALS[currentPanelSig].proc}</div>
+                  <div className="ip-sig-name" style={{fontSize:'20px', fontWeight:700}}>{SIGNALS[currentPanelSig].name}</div>
                 </div>
                 <div className="ip-hdr-actions">
-                  <div className="ip-close-btn" onClick={() => setFsOverlayOpen(false)}>✕</div>
+                  <div className="ip-close-btn" onClick={() => setFsOverlayOpen(false)} style={{width:'32px', height:'32px', fontSize:'16px'}}>✕</div>
                 </div>
               </div>
-            </div>
-            <div className="ip-body" style={{ flex: 1, overflowY: 'auto', padding: '16px 22px' }}>
-              <div style={{ fontFamily: 'var(--f-body)', fontSize: '14px', color: 'var(--ink-2)' }}>
-                Full view mode for {SIGNALS[currentPanelSig].name} is active.
+              <div className="ip-tabs" style={{marginTop:'12px'}}>
+                {['what', 'why', 'impact', 'actions', 'ask'].map(tab => (
+                  <div key={tab} className={`ip-tab ${panelTab === tab ? 'active' : ''}`} onClick={() => setPanelTab(tab)}>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </div>
+                ))}
               </div>
+            </div>
+            <div style={{flex:1, overflowY:'auto', padding:'4px 20px 20px'}}>
+              <IPContent 
+                activeTab={panelTab}
+                sig={SIGNALS[currentPanelSig]}
+                currentPanelSig={currentPanelSig}
+                showToast={showToast}
+                followFromChat={followFromChat}
+                setActiveTab={setPanelTab}
+              />
             </div>
           </div>
         </div>

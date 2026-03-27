@@ -1,4 +1,4 @@
-import { useApp } from '../context/AppContext'
+import { useApp } from '../../context/AppContext'
 
 export default function ExecBriefModal() {
     const { showExecBrief, setShowExecBrief } = useApp()
