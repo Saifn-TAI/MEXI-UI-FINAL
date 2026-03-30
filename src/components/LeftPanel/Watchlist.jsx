@@ -13,7 +13,7 @@ export default function Watchlist({ watchlist, openPanel, showToast, unfollowEnt
   };
 
   return (
-    <div className="wl-section" ref={wlRef} style={{ marginTop: '12px', paddingBottom: '24px' }}>
+    <div className="wl-section" ref={wlRef}>
       <div className="rc-toggle-hdr" onClick={toggleWatchlist}>
         <div className="rc-toggle-left">
           <span className="rc-title">Watchlist</span>

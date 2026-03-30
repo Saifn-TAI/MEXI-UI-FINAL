@@ -1079,7 +1079,7 @@ body {
 
 /* â”€â”€ COMPACT HEATMAP â”€â”€ */
 .hmap-section {
-  padding: 0 0 4px
+  margin: 8px 10px
 }
 
 .hmap-label {
@@ -3026,7 +3026,8 @@ body {
 
 /* â”€â”€ WATCHLIST SECTION â”€â”€ */
 .wl-section {
-  margin: 0 10px 8px
+  margin: 8px 10px;
+  padding-bottom: 24px
 }
 
 .wl-label {

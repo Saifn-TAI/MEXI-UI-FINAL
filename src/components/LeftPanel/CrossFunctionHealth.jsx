@@ -4,7 +4,7 @@ export default function CrossFunctionHealth({ openPanel, showToast }) {
   const [hmapOpen, setHmapOpen] = useState(false);
 
   return (
-    <div className="hmap-section" style={{ marginTop: '16px' }}>
+    <div className="hmap-section">
       <div className="rc-toggle-hdr" onClick={() => setHmapOpen(!hmapOpen)}>
         <div className="rc-toggle-left">
           <span className="rc-title">Cross-Function Health</span>
