@@ -72,7 +72,6 @@ export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
         </div>
         
         <div className="login-title">Create an account</div>
-        <div className="login-sub" style={{ marginBottom: '24px' }}>Sign up to access the CEO Intelligence Dashboard</div>
 
         <div className={`login-error ${errorMsg ? 'show' : ''}`} id="login-error">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4">
