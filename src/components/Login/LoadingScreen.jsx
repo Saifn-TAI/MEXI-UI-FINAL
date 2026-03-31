@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './Login.css';
 
-export default function LoadingScreen({ onLoadingComplete }) {
+export default function LoadingScreen({ onLoadingComplete, loadingTexts: propsLoadingTexts }) {
   const [textIndex, setTextIndex] = useState(0);
   
-  const loadingTexts = [
-    "Establishing secure connection...",
+  const loadingTexts = propsLoadingTexts || [
+    "Establishing secure connection to API...",
     "Retrieving CEO dashboard credentials...",
-    "Syncing SAP B1 cross-function data...",
+    "Syncing enterprise cross-function data...",
     "Compiling critical alerts & warnings...",
     "Initializing Intelligence Engine..."
   ];
+
 
   useEffect(() => {
     const textInterval = setInterval(() => {

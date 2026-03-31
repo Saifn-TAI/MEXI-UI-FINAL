@@ -1891,7 +1891,7 @@ body {
 
 .ip-sig-name {
   font-family: var(--f-primary);
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--ink);
   line-height: 1.25;

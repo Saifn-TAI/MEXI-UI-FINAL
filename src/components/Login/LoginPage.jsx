@@ -53,7 +53,7 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
           <div className="login-logo-div"></div>
           <span className="login-logo-sub">Veejei Automation</span>
         </div>
-        <div className="login-title">Welcome back</div>
+        <div className="login-title">Welcome!</div>
 
         <div className={`login-error ${errorMsg ? 'show' : ''}`} id="login-error">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4">
@@ -70,11 +70,11 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
               <rect x="2" y="4" width="14" height="10" rx="2" />
               <path d="M2 6l7 5 7-5" />
             </svg>
-            <input 
-              className="login-input" 
-              id="login-email" 
-              type="email" 
-              placeholder="you@gmail.com" 
+            <input
+              className="login-input"
+              id="login-email"
+              type="email"
+              placeholder="you@gmail.com"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -89,11 +89,11 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
               <rect x="4" y="8" width="10" height="7" rx="2" />
               <path d="M6 8V6a3 3 0 016 0v2" />
             </svg>
-            <input 
-              className="login-input" 
-              id="login-pw" 
-              type={showPw ? 'text' : 'password'} 
-              placeholder="Enter your password" 
+            <input
+              className="login-input"
+              id="login-pw"
+              type={showPw ? 'text' : 'password'}
+              placeholder="Enter your password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -118,7 +118,7 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
 
         <div className="login-row">
           <label className="login-remember"><input type="checkbox" id="remember" /> Remember me</label>
-          <button className="login-forgot" onClick={() => {}}>Forgot password?</button>
+          <button className="login-forgot" onClick={() => { }}>Forgot password?</button>
         </div>
 
         <button className={`login-btn ${isLoading ? 'loading' : ''}`} id="login-btn" onClick={doLogin}>

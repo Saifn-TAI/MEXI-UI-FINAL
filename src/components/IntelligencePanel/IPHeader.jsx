@@ -5,11 +5,10 @@ export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, f
     <div className="ip-hdr">
       <div className="ip-hdr-top">
         <div className="ip-hdr-left">
-          <div className="ip-sig-id">{formatId(currentPanelSig)}</div>
           <div className="ip-sig-name">{sig.name}</div>
           <div className="ip-badge-row">
             <span className={`ip-badge ${badgeCls}`}>{badgeLabel}</span>
-            <span className="ip-badge p">{sig.proc.split('·')[0].trim()}</span>
+            <span className="ip-badge p">{sig.proc.split('·')[1]?.trim() || sig.proc.split('·')[0].trim()}</span>
             <span className="ip-badge" style={{color:'var(--ink-2)', background:'var(--canvas)', borderColor:'var(--bd-2)'}}>{sig.val}</span>
           </div>
         </div>

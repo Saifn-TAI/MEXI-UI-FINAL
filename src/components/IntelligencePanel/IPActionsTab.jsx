@@ -13,7 +13,6 @@ export default function IPActionsTab({ sig, currentPanelSig, showToast, followFr
             <div className="action-btns-ip">
               <div className="aib assign" onClick={() => showToast('Assign — coming in Phase 2')}>Assign ↗</div>
               <div className="aib agent" onClick={() => showToast('Agent triggered — re-run scheduled')}>Run Agent</div>
-              <div className="aib tracker" onClick={() => showToast(`+ Tracker: [${currentPanelSig}] ${a.t.substring(0,40)}`)}>+ Tracker</div>
             </div>
           </div>
         </div>

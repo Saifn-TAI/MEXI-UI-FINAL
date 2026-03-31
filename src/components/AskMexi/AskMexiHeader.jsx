@@ -7,7 +7,7 @@ export default function AskMexiHeader({ rcpOpen, setRcpOpen, startNewChat }) {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
       <span className="ask-mexi-title">Ask MExI</span>
-      <span className="ask-mexi-sub">CEO · Decision Intelligence</span>
+
       <div className="ask-mexi-history-btn" onClick={() => setRcpOpen(!rcpOpen)} title="Recent chats">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Recent
