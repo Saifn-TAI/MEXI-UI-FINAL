@@ -77,9 +77,6 @@ export default function ChatMessages({ messages, isTyping, msgsRef, openPanel, f
                         <div onClick={() => openPanel(m.sigId,'actions')} style={{display:'inline-flex', alignItems:'center', gap:'4px', padding:'4px 11px', borderRadius:'var(--r-pill)', background:'var(--accent-5)', color:'var(--primary-dark)', fontFamily:'var(--f-body)', fontSize:'9.5px', fontWeight:600, cursor:'pointer', border:'1.5px solid var(--primary-bd)'}}>
                           Actions
                         </div>
-                        <div onClick={() => followFromChat(m.sigId)} style={{display:'inline-flex', alignItems:'center', gap:'4px', padding:'4px 11px', borderRadius:'var(--r-pill)', background:'var(--canvas)', color:'var(--ink-3)', fontFamily:'var(--f-body)', fontSize:'9.5px', fontWeight:600, cursor:'pointer', border:'1.5px solid var(--bd-2)'}}>
-                          + Follow
-                        </div>
                       </div>
                     )}
                   </div>

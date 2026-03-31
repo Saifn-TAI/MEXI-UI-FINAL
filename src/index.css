@@ -2585,17 +2585,22 @@ body {
 }
 
 .settings-close {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--surface-2);
-  border: 1px solid var(--bd-2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--ink-3);
-  cursor: pointer
+  cursor: pointer;
+  transition: all .15s ease;
+  margin: -6px -6px 0 0;
+}
+
+.settings-close:hover {
+  background: var(--surface-2);
+  color: var(--ink);
 }
 
 .settings-body {
@@ -3950,9 +3955,6 @@ body {
 }
 
 .pref-hdr {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
   padding-bottom: 14px
 }
 
@@ -5137,6 +5139,16 @@ body {
 
 .lp-bc-p::before {
   background: var(--primary)
+}
+
+.lp-bc-white {
+  background: #ffffff;
+  border-color: var(--bd);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.lp-bc-white::before {
+  background: var(--primary);
 }
 
 .lp-biz-card:hover {
