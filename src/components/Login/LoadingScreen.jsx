@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Login.css';
+import logo from '../../assets/logo.png';
 
 export default function LoadingScreen({ onLoadingComplete, loadingTexts: propsLoadingTexts }) {
   const [textIndex, setTextIndex] = useState(0);
@@ -36,8 +37,8 @@ export default function LoadingScreen({ onLoadingComplete, loadingTexts: propsLo
       <div className="login-bg-orb o2"></div>
       
       <div className="loading-content">
-        <div className="loading-logo">
-          MEXI<span className="login-logo-pip"></span>
+        <div className="loading-logo" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <img src={logo} alt="MEXI Logo" style={{ height: '90px', width: 'auto' }} />
         </div>
         
         <div className="loading-spinner-wrapper">

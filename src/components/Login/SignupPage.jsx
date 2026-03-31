@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import logo from '../../assets/logo.png';
 
 export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
   const [formData, setFormData] = useState({
@@ -65,10 +66,8 @@ export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
       
       {/* Slightly wider card and less padding to accommodate more fields cleanly */}
       <div className="login-card" style={{ width: '480px', padding: '40px' }}>
-        <div className="login-logo" style={{ marginBottom: '24px' }}>
-          <div className="login-logo-text">MEXI<span className="login-logo-pip"></span></div>
-          <div className="login-logo-div"></div>
-          <span className="login-logo-sub">Veejei Automation</span>
+        <div className="login-logo" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '16px' }}>
+          <img src={logo} alt="MEXI Logo" style={{ height: '70px', width: 'auto', display: 'block' }} />
         </div>
         
         <div className="login-title">Create an account</div>

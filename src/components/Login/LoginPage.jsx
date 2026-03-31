@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import logo from '../../assets/logo.png';
 
 export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
   const [email, setEmail] = useState('');
@@ -48,10 +49,8 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
       <div className="login-bg-orb o1"></div>
       <div className="login-bg-orb o2"></div>
       <div className="login-card">
-        <div className="login-logo">
-          <div className="login-logo-text">MEXI<span className="login-logo-pip"></span></div>
-          <div className="login-logo-div"></div>
-          <span className="login-logo-sub">Veejei Automation</span>
+        <div className="login-logo" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '8px' }}>
+          <img src={logo} alt="MEXI Logo" style={{ height: '80px', width: 'auto', display: 'block' }} />
         </div>
         <div className="login-title">Welcome!</div>
 

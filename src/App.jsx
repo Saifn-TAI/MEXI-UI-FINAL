@@ -29,6 +29,7 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [fsOverlayOpen, setFsOverlayOpen] = useState(false);
+  const [chatInputTrigger, setChatInputTrigger] = useState(null);
 
   // Watchlist state
   const [watchlist, setWatchlist] = useState(() => {
@@ -184,6 +185,8 @@ export default function App() {
             openPanel={openPanel}
             followFromChat={followFromChat}
             SIGNALS={SIGNALS}
+            chatInputTrigger={chatInputTrigger}
+            setChatInputTrigger={setChatInputTrigger}
           />
         </main>
 
@@ -197,6 +200,7 @@ export default function App() {
           togglePanelMode={togglePanelMode}
           showToast={showToast}
           followFromChat={followFromChat}
+          setChatInputTrigger={setChatInputTrigger}
         />
 
         <ExecBriefModal />
@@ -260,6 +264,7 @@ export default function App() {
                 showToast={showToast}
                 followFromChat={followFromChat}
                 setActiveTab={setPanelTab}
+                setChatInputTrigger={setChatInputTrigger}
               />
             </div>
           </div>

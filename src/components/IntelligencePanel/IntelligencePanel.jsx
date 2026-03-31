@@ -7,7 +7,7 @@ import IPActionsTab from './IPActionsTab';
 import IPAskTab from './IPAskTab';
 import IPContent from './IPContent';
 
-export default function IntelligencePanel({ currentPanelSig, panelMode, activeTab, setActiveTab, SIGNALS, closePanel, togglePanelMode, showToast, followFromChat }) {
+export default function IntelligencePanel({ currentPanelSig, panelMode, activeTab, setActiveTab, SIGNALS, closePanel, togglePanelMode, showToast, followFromChat, setChatInputTrigger }) {
 
   const sig = SIGNALS[currentPanelSig];
   if (!sig || panelMode === 'hidden') return <div className="intel-panel hidden" />;
@@ -38,6 +38,7 @@ export default function IntelligencePanel({ currentPanelSig, panelMode, activeTa
         showToast={showToast}
         followFromChat={followFromChat}
         setActiveTab={setActiveTab}
+        setChatInputTrigger={setChatInputTrigger}
       />
     </div>
   );

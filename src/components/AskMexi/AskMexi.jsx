@@ -21,13 +21,21 @@ const CHAT_RESPONSES = {
   'default': {cause:'Signal detected from Veejei operational data. Cross-referencing machine shop, order book, and subcon GRN records.',impact:'Financial impact quantified by FVLA deterministic engine from source data.',timeline:'Data covers October 2025 to present.',conf:'high',rec:'Use the signal panel on the right to explore root causes, evidence data, and specific actions.'},
 };
 
-export default function AskMexi({ roleData, showToast, openPanel, followFromChat, SIGNALS }) {
+export default function AskMexi({ roleData, showToast, openPanel, followFromChat, SIGNALS, chatInputTrigger, setChatInputTrigger }) {
   const [rcpOpen, setRcpOpen] = useState(false);
   const [recentChats, setRecentChats] = useState(DEMO_RECENT_CHATS);
   const [messages, setMessages] = useState([]);
   const [inputVal, setInputVal] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const msgsRef = useRef(null);
+
+  useEffect(() => {
+    if (chatInputTrigger) {
+      setInputVal(chatInputTrigger);
+      sendChat(chatInputTrigger);
+      setChatInputTrigger(null);
+    }
+  }, [chatInputTrigger]);
 
   useEffect(() => {
     if (msgsRef.current) {
