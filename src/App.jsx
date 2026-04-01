@@ -9,6 +9,7 @@ import IPContent from './components/IntelligencePanel/IPContent';
 import LoginPage from './components/Login/LoginPage';
 import SignupPage from './components/Login/SignupPage';
 import LoadingScreen from './components/Login/LoadingScreen';
+import BizImpactDrawer from './components/LeftPanel/BizImpactDrawer';
 import { useApp } from './context/AppContext';
 import { ROLES, SIGNALS } from './data/mockData';
 
@@ -30,6 +31,9 @@ export default function App() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [fsOverlayOpen, setFsOverlayOpen] = useState(false);
   const [chatInputTrigger, setChatInputTrigger] = useState(null);
+
+  // Biz Impact Drawer state — lifted to App so it renders outside LeftPanel's transform
+  const [activeBizCard, setActiveBizCard] = useState(null);
 
   // Watchlist state
   const [watchlist, setWatchlist] = useState(() => {
@@ -174,6 +178,7 @@ export default function App() {
           showToast={showToast}
           openBrief={() => { setShowExecBrief(true); showToast('Opening Executive Brief...'); }}
           openAllSignalsPanel={() => setAllSignalsOpen(true)}
+          openBizCard={(cardId) => setActiveBizCard(cardId)}
           watchlist={watchlist}
           unfollowEntity={unfollowEntity}
         />
@@ -210,6 +215,16 @@ export default function App() {
         <div className="panel-expand-btn" style={{ display: 'flex' }} onClick={() => setLeftPanelOpen(true)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
         </div>
+      )}
+
+      {/* Biz Impact Drawer — rendered at root level to escape LeftPanel's CSS transform */}
+      {activeBizCard && (
+        <BizImpactDrawer
+          cardId={activeBizCard}
+          SIGNALS={SIGNALS}
+          onClose={() => setActiveBizCard(null)}
+          openPanel={(sigId, tab) => { setActiveBizCard(null); openPanel(sigId, tab); }}
+        />
       )}
 
       {/* OVERLAYS */}

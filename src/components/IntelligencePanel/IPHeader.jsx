@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, formatId, togglePanelMode, closePanel, activeTab, setActiveTab }) {
+export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, formatId, togglePanelMode, closePanel, activeTab, setActiveTab, headerFlash }) {
   return (
-    <div className="ip-hdr">
+    <div className={`ip-hdr ${headerFlash ? 'ip-hdr-flash' : ''}`}>
       <div className="ip-hdr-top">
         <div className="ip-hdr-left">
           <div className="ip-sig-name">{sig.name}</div>

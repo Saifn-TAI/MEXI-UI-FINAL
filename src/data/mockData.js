@@ -1,4 +1,4 @@
-﻿export const ROLES = {
+export const ROLES = {
   CEO: {
     label:'CEO',urole:'Chief Executive Officer',uav:'CE',
     recLabel:'Enterprise Risk Exposure',
@@ -16,7 +16,7 @@
       {c:'a',text:'<strong>Bonfiglioli at ₹843L</strong> — 70.6% of total pending order book in a single customer. Zero buffer if one line slips.',sig:'D5.08'},
     ],
     chips:['What is the biggest risk to revenue this week?','Why is production failing to deliver?','What happens if Bonfiglioli slips?'],
-    sigOrder:['D5.01','P3.04','S1.01','D5.08','P3.01'],
+    sigOrder:['D5.01','P3.04','S1.01','M7.19','P3.01','D5.08','S1.04','P3.03','V2.07','M7.09','S1.16','P3.13','I4.19','D5.09'],
   },
   CFO: {
     label:'CFO',urole:'Chief Financial Officer',uav:'CF',
@@ -35,7 +35,7 @@
       {c:'a',text:'<strong>IATF penalty exposure active</strong> — OTD at 58.3% against 95% threshold. Penalty clause rates not yet configured.',sig:'D5.01'},
     ],
     chips:['What is driving margin erosion?','How much capital is locked in WIP?','Which customers have penalty clauses active?'],
-    sigOrder:['D5.01','P3.03','P3.01','D5.08','S1.01'],
+    sigOrder:['D5.01','P3.03','P3.01','D5.08','S1.01','M7.19','P3.04','S1.04','V2.07','M7.09','S1.16','P3.13','I4.19','D5.09'],
   },
   COO: {
     label:'COO',urole:'Chief Operating Officer',uav:'CO',
@@ -54,11 +54,107 @@
       {c:'a',text:'<strong>3 machines operating without warranty</strong> since December 2025. HMC-02 at 35.9% efficiency — highest breakdown risk.',sig:'M7.19'},
     ],
     chips:['Why is production completion so low?','Which machines need immediate attention?','What is blocking OTD recovery?'],
-    sigOrder:['P3.04','S1.01','D5.01','P3.01','V2.07'],
+    sigOrder:['P3.04','S1.01','D5.01','P3.01','V2.07','M7.19','S1.04','P3.03','D5.08','M7.09','S1.16','P3.13','I4.19','D5.09'],
   },
 };
 
+// ── BIZ IMPACT CARD DEFINITIONS ──────────────────────────────────────────────
+// Each card maps to multiple contributing signals with breakdown detail
+export const BIZ_IMPACT_CARDS = [
+  {
+    id: 'revenue-at-risk',
+    label: 'Revenue at Risk',
+    value: '₹924L',
+    delta: '↑ ₹82L',
+    deltaDir: 'r',
+    desc: '170 orders delayed',
+    color: 'r',
+    totalNote: 'Aggregated across 4 contributing signals',
+    breakdown: [
+      { sigId: 'D5.01', contribution: '₹497L', pct: 54, label: 'OTD Collapse — overdue order value', sev: 'r' },
+      { sigId: 'P3.04', contribution: '₹184L', pct: 20, label: 'Production WO backlog risk', sev: 'r' },
+      { sigId: 'S1.01', contribution: '₹148L', pct: 16, label: 'Supplier delivery failure', sev: 'r' },
+      { sigId: 'D5.08', contribution: '₹95L*', pct: 10, label: 'Bonfiglioli exposure risk*', sev: 'a' }
+    ],
+    summaryNote: '* Bonfiglioli ₹843L is concentration exposure, currently in health. ₹95L shown is the weighted risk contribution based on Recent Supplier Delays.',
+    keyMetrics: [
+      { l: 'Overdue Lines', v: '170 of 334', c: 'r' },
+      { l: 'Oldest Overdue', v: '535 days', c: 'r' },
+      { l: 'IATF Penalty', v: 'Active', c: 'r' },
+    ],
+    topAction: 'MD-level calls for Toshiba, Rotzler, Bull Machine this week',
+  },
+  {
+    id: 'capital-locked',
+    label: 'Capital Locked',
+    value: '₹77L',
+    delta: '↑ ₹12L',
+    deltaDir: 'r',
+    desc: 'Excess raw material',
+    color: 'a',
+    totalNote: 'Aggregated across 3 contributing signals',
+    breakdown: [
+      { sigId: 'P3.01', contribution: '₹38L', pct: 49, label: 'Stalled WIP on floor', sev: 'r' },
+      { sigId: 'P3.03', contribution: '₹22L', pct: 29, label: 'Idle machine overhead absorbed', sev: 'r' },
+      { sigId: 'V2.07', contribution: '₹11L', pct: 14, label: 'Subcon holds — single-source ops', sev: 'a' },
+      { sigId: 'I4.19', contribution: '₹6L', pct: 8, label: 'Excess raw material inventory', sev: 'a' },
+    ],
+    summaryNote: 'Capital locked in non-productive assets. ₹38L in WIP recovering at <10%/period.',
+    keyMetrics: [
+      { l: 'Idle Machine Time', v: '4,042 hrs', c: 'r' },
+      { l: 'WIP Completion', v: '7.5%', c: 'r' },
+      { l: 'Subcon Holds', v: '8 ops', c: 'a' },
+    ],
+    topAction: 'SMED programme to recover ₹22L of idle overhead immediately',
+  },
+  {
+    id: 'margin-impact',
+    label: 'Margin Impact',
+    value: '1.4%',
+    delta: '↑ 0.3%',
+    deltaDir: 'r',
+    desc: 'Idle machine overhead',
+    color: 'p',
+    totalNote: 'Aggregated across 3 contributing signals',
+    breakdown: [
+      { sigId: 'P3.03', contribution: '0.6%', pct: 43, label: 'No-Operator idle overhead (194K min)', sev: 'r' },
+      { sigId: 'P3.01', contribution: '0.5%', pct: 36, label: 'Setup time waste — unproductive hrs', sev: 'r' },
+      { sigId: 'S1.01', contribution: '0.3%', pct: 21, label: 'Emergency premium sourcing cost', sev: 'a' },
+    ],
+    summaryNote: 'Each 0.1% margin recovery = ₹6–9L annually at current revenue base.',
+    keyMetrics: [
+      { l: 'Non-Productive Hrs', v: '4,042 hrs', c: 'r' },
+      { l: 'Setup Waste', v: '130K min', c: 'r' },
+      { l: 'Recoverable Margin', v: '~0.6%', c: 'a' },
+    ],
+    topAction: 'Pre-shift check-in protocol eliminates No-Operator category immediately',
+  },
+  {
+    id: 'on-time-delivery',
+    label: 'On-Time Delivery',
+    value: '58.3%',
+    delta: '↓ 4.1%',
+    deltaDir: 'r',
+    desc: 'Fleet-wide average',
+    color: 'r',
+    totalNote: 'Fleet OTD driven by 3 root cause signals',
+    breakdown: [
+      { sigId: 'P3.04', contribution: '↓ 2.4%', pct: 59, label: 'WO completion failure (7.5%) reduces throughput', sev: 'r' },
+      { sigId: 'P3.01', contribution: '↓ 1.2%', pct: 29, label: 'Machine efficiency at 43.4%', sev: 'r' },
+      { sigId: 'S1.01', contribution: '↓ 0.5%', pct: 12, label: 'Supplier delays starving production', sev: 'r' },
+    ],
+    summaryNote: 'Target OTD: 95% (IATF). Current: 58.3%. Gap: 36.7 percentage points. Penalty clauses active.',
+    keyMetrics: [
+      { l: 'Target (IATF)', v: '95%', c: 'g' },
+      { l: 'Current OTD', v: '58.3%', c: 'r' },
+      { l: 'Gap', v: '−36.7%', c: 'r' },
+    ],
+    topAction: 'Freeze new BTPL WOs, prioritise top 20 overdue SOs by value × delay days',
+  },
+];
+
 export const SIGNALS = {
+  // ── CRITICAL (7) ─────────────────────────────────────────────────────────
   'D5.01':{name:'On-Time Delivery Collapse',proc:'Demand · Order Fulfilment',sev:'r',val:'58.3%',impact:'₹247L overdue',
     what:{meas:[{l:'OTD Rate',v:'58.3%',c:'r'},{l:'Overdue Lines',v:'170 of 334',c:'r'},{l:'Overdue Value',v:'₹247L',c:'r'}],
       table:{h:['Customer','Overdue Orders','Days Oldest','Value'],r:[['Toshiba T&D','8','323d','₹57.8L'],['Sakthi Auto','1','19d','₹41.5L'],['Rotzler','20','504d','₹30.1L'],['Bull Machine','4','535d','₹20.9L']],c:['','r','r','r']}},
@@ -91,13 +187,38 @@ export const SIGNALS = {
     fvla:{rev:'—',revS:'Indirect — efficiency loss cascades to delivery',cap:'₹77L absorbed',capS:'4,042 hrs idle machine overhead',mar:'Setting: 2,168 hrs wasted',marS:'Setup cost without saleable output'},
     acts:[{t:'SMED programme — top 5 machine-operation combos',s:'Setting = 130,075 min · largest recoverable loss category'},{t:'Operator scheduling audit — next 4 weeks',s:'No Operator = 22,339 min · immediately recoverable'}]},
 
-  'D5.08':{name:'Bonfiglioli Revenue Concentration Risk',proc:'Demand · Key Account',sev:'a',val:'70.6%',impact:'₹843L exposed',
+  'M7.19':{name:'Warranty Lapsed — 3 Machines Unprotected',proc:'Maintenance · PM · Warranty',sev:'r',val:'3 machines',impact:'Breakdown unprotected',
+    what:{meas:[{l:'Machines Expired',v:'3',c:'r'},{l:'Days Unprotected',v:'99–103d',c:'r'},{l:'Highest Risk',v:'HMC-02',c:'r'}],
+      table:{h:['Machine','Model','Expired','Days Out'],r:[['VTL-14','BVL800H','6 Dec 2025','103d'],['VTL-15','BVL800H','8 Dec 2025','101d'],['HMC-02','PRIMA 65','10 Dec 2025','99d']],c:['','','','r']}},
+    why:{cause:'Three machines had warranty expire simultaneously in December 2025. Scheduled event — not a surprise. AMC renewal was not actioned.',impact:'Any breakdown on VTL-14, VTL-15, or HMC-02 since December 2025 is at full unprotected repair cost. HMC-02 at 35.9% efficiency is highest breakdown probability.',timeline:'99–103 days unprotected as of today. Window to renew is still open — waiting increases risk daily.',confidence:'high',rec:'Contact OEM immediately for all three machines. HMC-02 AMC renewal first — lowest efficiency in fleet, highest breakdown probability.'},
+    hyps:[{r:'H1',c:'h1',t:'AMC renewal not actioned at warranty expiry',e:'Three machines lapsed simultaneously — scheduled event not acted upon. Process failure.'},{r:'H2',c:'h1',t:'HMC-02 breakdown probability is highest',e:'35.9% efficiency + no warranty = degraded machine with no cost protection.'}],
+    fvla:{rev:'—',revS:'Breakdown cost activates on failure',cap:'Full OEM repair — unprotected',capS:'Typical VTL breakdown: ₹2–10L',mar:'HMC-02 stoppage risk',marS:'HMC-02 on critical production path'},
+    acts:[{t:'Contact OEM for VTL-14, VTL-15, HMC-02 — this week',s:'PM SCHEDULE · Warranty expired Dec 2025 · 99–103 days unprotected'},{t:'HMC-02 AMC renewal first priority',s:'35.9% efficiency + expired cover = highest risk machine in fleet'}]},
+
+  'D5.08':{name:'Bonfiglioli Revenue Concentration Risk',proc:'Demand · Key Account',sev:'r',val:'70.6%',impact:'₹843L exposed',
     what:{meas:[{l:'Bonfiglioli Share',v:'70.6%',c:'r'},{l:'Pending Value',v:'₹843L',c:'r'},{l:'Lines Overdue',v:'0 currently',c:'g'}],
       table:{h:['Customer','Pending Value','Book Share','Overdue'],r:[['Bonfiglioli','₹843L','70.6%','0'],['Toshiba T&D','₹57.8L','4.8%','8'],['Sakthi Auto','₹41.5L','3.5%','1'],['Rotzler','₹30.1L','2.5%','20']],c:['','r','r','r']}},
     why:{cause:'70.6% of total pending order book concentrated in one customer. Fleet OTD at 58.3% — production instability makes any Bonfiglioli miss a near-certainty without active protection.',impact:'₹843L at risk if Bonfiglioli relationship deteriorates. IATF penalties activate on first missed delivery.',timeline:'Concentration has been building. Bonfiglioli has 0 overdue now — window to act is open but closing.',confidence:'med',rec:'Ring-fence all Bonfiglioli WOs in production schedule. Weekly delivery status review. No Bonfiglioli line to slip without MD approval.'},
     hyps:[{r:'H1',c:'h1',t:'Bonfiglioli not ring-fenced in production',e:'OTD at 58.3% fleet-wide — no evidence of Bonfiglioli WO priority protection.'},{r:'H2',c:'h2',t:'Revenue diversification not progressed',e:'70.6% in one customer gives Bonfiglioli extreme pricing and delivery leverage.'}],
     fvla:{rev:'₹843L at concentration risk',revS:'70.6% of ₹1,193L total pending order book',cap:'—',capS:'',mar:'IATF penalty if any line slips',marS:'Penalty clause rates need configuration'},
     acts:[{t:'Ring-fence Bonfiglioli WOs — MD approval to de-prioritise',s:'DETAILED ORDER BOOK · Customer=Bonfiglioli · SUM(Pending Qty × Unit Price)'},{t:'Weekly delivery status review — Bonfiglioli',s:'0 overdue now — maintain this record · OTD fleet is 58.3%'}]},
+
+  'S1.04':{name:'Repeat Supplier Default — No Escalation',proc:'Supply · Supplier Governance',sev:'r',val:'3 vendors',impact:'₹42L exposure',
+    what:{meas:[{l:'Repeat Defaults',v:'3 vendors',c:'r'},{l:'Consecutive Periods',v:'3–4',c:'r'},{l:'Escalation Triggered',v:'None',c:'r'}],
+      table:{h:['Vendor','Defaults','Periods','Status'],r:[['Vendor A (Castings)','4','4 consecutive','No action'],['Vendor B (Forgings)','3','3 consecutive','No action'],['Vendor C (Fasteners)','3','3 consecutive','No action']],c:['','r','r','r']}},
+    why:{cause:'Supplier SLA breach protocol not triggered despite 3+ consecutive missed deliveries. Process gap — no automated escalation.',impact:'₹42L of materials at delivery risk. Production planning disrupted for 3 periods consecutively.',timeline:'Pattern established over 3–4 delivery cycles. Earliest breach: Vendor A, Period 1.',confidence:'high',rec:'Issue formal 30-day Performance Improvement Notice to all three vendors. Initiate alternate vendor qualification immediately.'},
+    hyps:[{r:'H1',c:'h1',t:'No automated SLA breach alert process',e:'3 vendors, 3+ periods missed — no system trigger for escalation.'},{r:'H2',c:'h2',t:'Procurement team not empowered to escalate',e:'Escalation to MD level requires process trigger that does not exist.'}],
+    fvla:{rev:'₹42L immediate',revS:'Materials at delivery risk',cap:'—',capS:'',mar:'Emergency sourcing premium',marS:'Rush orders from spot market'},
+    acts:[{t:'Issue 30-day PIP to Vendor A, B, C',s:'Formal notice with specific OTD targets and consequences.'},{t:'Begin alternate qualification — Castings and Forgings',s:'Highest volume, highest risk categories. 60-day qualification.'}]},
+
+  // ── WARNING (5) ───────────────────────────────────────────────────────────
+  'P3.03':{name:'Machine Idle Rate — Overhead Waste',proc:'Production · Work Centre',sev:'a',val:'39.1%',impact:'₹18K/day',
+    what:{meas:[{l:'Idle Rate',v:'39.1%',c:'r'},{l:'No-Op Downtime',v:'194K min',c:'r'},{l:'Total Non-Productive',v:'4,042 hrs',c:'r'}],
+      table:{h:['Reason','Total Mins','% of Losses'],r:[['Setting','130,075','53.6%'],['Inspection','60,209','24.8%'],['No Operator','22,339','9.2%'],['Power Cut','2,639','1.1%'],['M/C Breakdown','862','0.4%']],c:['','a','']}},
+    why:{cause:'39.1% of machine time idle. No-Operator category alone is 194,278 minutes — machines ready but unattended.',impact:'Full machine overhead absorbed with zero output. ₹18K/day estimated cost at current idle rate.',timeline:'Idle rate has been at this level across the full Oct 2025–Jan 2026 period. Consistent, not a spike.',confidence:'high',rec:'Pre-shift operator check-in protocol eliminates No-Operator category (22,339 min). Inspection time-box (max 30 min/job) addresses 60,209 min.'},
+    hyps:[{r:'H1',c:'h1',t:'Shift scheduling gap — no operator pre-assignment',e:'Machines ready at shift start, operators arriving late or not assigned.'},{r:'H2',c:'h2',t:'No inspection time limit policy',e:'60,209 min inspection with no time-box — open-ended quality holds absorbing machine time.'}],
+    fvla:{rev:'—',revS:'Indirect via production throughput',cap:'₹22L absorbed overhead',capS:'4,042 hrs × machine hour rate',mar:'0.6% margin recoverable',marS:'No-Operator category alone = 0.6% margin recovery'},
+    acts:[{t:'Pre-shift operator check-in protocol',s:'No Operator = 22,339 min · recoverable immediately with discipline'},{t:'Inspection time-box policy — max 30 min per job',s:'Inspection = 60,209 min · second largest loss category'}]},
 
   'V2.07':{name:'Single-Source Vendor Dependency',proc:'Vendor · Subcontracting · Risk',sev:'a',val:'8 ops',impact:'16,380 pcs at risk',
     what:{meas:[{l:'Single-Source Ops',v:'8',c:'r'},{l:'MP Tech Dependency',v:'2 ops',c:'r'},{l:'Volume at Risk',v:'16,380 pcs',c:'r'}],
@@ -107,23 +228,48 @@ export const SIGNALS = {
     fvla:{rev:'1,659 pcs stalled if MP Tech fails',revS:'Turning-2 + Pre Mach-2 simultaneously affected',cap:'No alternate routing',capS:'Zero fallback for 8 critical operations',mar:'Emergency premium TBD',marS:'Alternate vendor rates unknown'},
     acts:[{t:'Qualify alternate for Turning-2 and Stress Relieving',s:'Highest volume single-source ops · 60-day qualification target'},{t:'MP Tech capacity and financial health check',s:'6,132 pcs (20% of volume) · sole vendor for 2 ops'}]},
 
-  'M7.19':{name:'Warranty Lapsed — 3 Machines Unprotected',proc:'Maintenance · PM · Warranty',sev:'r',val:'3 machines',impact:'Breakdown unprotected',
-    what:{meas:[{l:'Machines Expired',v:'3',c:'r'},{l:'Days Unprotected',v:'99–103d',c:'r'},{l:'Highest Risk',v:'HMC-02',c:'r'}],
-      table:{h:['Machine','Model','Expired','Days Out'],r:[['VTL-14','BVL800H','6 Dec 2025','103d'],['VTL-15','BVL800H','8 Dec 2025','101d'],['HMC-02','PRIMA 65','10 Dec 2025','99d']],c:['','','','r']}},
-    why:{cause:'Three machines had warranty expire simultaneously in December 2025. Scheduled event — not a surprise. AMC renewal was not actioned.',impact:'Any breakdown on VTL-14, VTL-15, or HMC-02 since December 2025 is at full unprotected repair cost. HMC-02 at 35.9% efficiency is highest breakdown probability.',timeline:'99–103 days unprotected as of today. Window to renew is still open — waiting increases risk daily.',confidence:'high',rec:'Contact OEM immediately for all three machines. HMC-02 AMC renewal first — lowest efficiency in fleet, highest breakdown probability.'},
-    hyps:[{r:'H1',c:'h1',t:'AMC renewal not actioned at warranty expiry',e:'Three machines lapsed simultaneously — scheduled event not acted upon. Process failure.'},{r:'H2',c:'h1',t:'HMC-02 breakdown probability is highest',e:'35.9% efficiency + no warranty = degraded machine with no cost protection.'}],
-    fvla:{rev:'—',revS:'Breakdown cost activates on failure',cap:'Full OEM repair — unprotected',capS:'Typical VTL breakdown: ₹2–10L',mar:'HMC-02 stoppage risk',marS:'HMC-02 on critical production path'},
-    acts:[{t:'Contact OEM for VTL-14, VTL-15, HMC-02 — this week',s:'PM SCHEDULE · Warranty expired Dec 2025 · 99–103 days unprotected'},{t:'HMC-02 AMC renewal first priority',s:'35.9% efficiency + expired cover = highest risk machine in fleet'}]},
+  'M7.09':{name:'Machine Downtime — VTL06 Highest Risk',proc:'Maintenance · Downtime · Work Centre',sev:'a',val:'14,793 min',impact:'₹8L downtime cost',
+    what:{meas:[{l:'VTL06 Downtime',v:'14,793 min',c:'r'},{l:'Fleet Avg Downtime',v:'11,200 min',c:'a'},{l:'PM Compliance',v:'85%',c:'a'}],
+      table:{h:['Machine','Downtime (min)','Breakdown Hrs','PM Status'],r:[['VTL06','14,793','48','Overdue'],['HMC01','13,081','42','Due'],['HMC02','13,081','42','Expired-AMC'],['VMC05','14,534','46','On schedule'],['VTL04','12,383','40','On schedule']],c:['','r','','']}},
+    why:{cause:'VTL06 highest total downtime in fleet. 85% PM compliance means 15% of scheduled maintenance not actioned — breakdown risk elevated.',impact:'48 hours of VTL06 breakdown in period. ₹8L estimated downtime cost including overhead and production loss.',timeline:'Downtime pattern consistent over last 3 periods. PM compliance slipping gradually.',confidence:'med',rec:'Expedite overdue PM for VTL06. Review PM schedule compliance for all machines > 13,000 min downtime.'},
+    hyps:[{r:'H1',c:'h2',t:'PM schedule not enforced for high-utilisation machines',e:'VTL06 PM overdue — machine driven past service interval.'},{r:'H2',c:'h2',t:'Breakdown driving downtime, not planned PM',e:'48 hrs breakdown vs expected PM duration — reactive maintenance pattern.'}],
+    fvla:{rev:'—',revS:'Indirect via throughput loss',cap:'₹8L downtime absorbed',capS:'48 hrs × machine hour rate',mar:'—',marS:''},
+    acts:[{t:'Expedite VTL06 overdue PM this week',s:'14,793 min downtime · overdue PM · highest fleet downtime'},{t:'Review PM compliance across fleet',s:'85% compliance · 15% gap · machines > 13,000 min downtime at risk'}]},
 
-  'P3.03':{name:'Machine Idle Rate — Overhead Waste',proc:'Production · Work Centre',sev:'r',val:'39.1%',impact:'₹18K/day',
-    what:{meas:[{l:'Idle Rate',v:'39.1%',c:'r'},{l:'No-Op Downtime',v:'194K min',c:'r'},{l:'Total Non-Productive',v:'4,042 hrs',c:'r'}],
-      table:{h:['Reason','Total Mins','% of Losses'],r:[['Setting','130,075','53.6%'],['Inspection','60,209','24.8%'],['No Operator','22,339','9.2%'],['Power Cut','2,639','1.1%'],['M/C Breakdown','862','0.4%']],c:['','a','']}},
-    why:{cause:'39.1% of machine time idle. No-Operator category alone is 194,278 minutes — machines ready but unattended.',impact:'Full machine overhead absorbed with zero output. ₹18K/day estimated cost at current idle rate.',timeline:'Idle rate has been at this level across the full Oct 2025–Jan 2026 period. Consistent, not a spike.',confidence:'high',rec:'Pre-shift operator check-in protocol eliminates No-Operator category (22,339 min). Inspection time-box (max 30 min/job) addresses 60,209 min.'},
-    hyps:[{r:'H1',c:'h1',t:'Shift scheduling gap — no operator pre-assignment',e:'Machines ready at shift start, operators arriving late or not assigned.'},{r:'H2',c:'h2',t:'No inspection time limit policy',e:'60,209 min inspection with no time-box — open-ended quality holds absorbing machine time.'}],
-    fvla:{rev:'—',revS:'Indirect via production throughput',cap:'₹22L absorbed overhead',capS:'4,042 hrs × machine hour rate',mar:'0.6% margin recoverable',marS:'No-Operator category alone = 0.6% margin recovery'},
-    acts:[{t:'Pre-shift operator check-in protocol',s:'No Operator = 22,339 min · recoverable immediately with discipline'},{t:'Inspection time-box policy — max 30 min per job',s:'Inspection = 60,209 min · second largest loss category'}]},
+  'S1.16':{name:'Supplier Reliability Below Threshold',proc:'Supply · Vendor Reliability',sev:'a',val:'69%',impact:'Planning disruption',
+    what:{meas:[{l:'Fleet Reliability',v:'69%',c:'r'},{l:'Vendors Below 75%',v:'8 of 12',c:'a'},{l:'Avg Delay',v:'4.2 days',c:'a'}],
+      table:{h:['Vendor Category','Reliability','Avg Delay','Impact'],r:[['Castings','58%','6.1 days','Critical'],['Forgings','63%','5.8 days','High'],['Fasteners','74%','3.2 days','High'],['Sheet Metal','82%','2.1 days','Medium']],c:['','r','','']}},
+    why:{cause:'69% overall vendor reliability — 8 of 12 vendors below 75% threshold. Average delay of 4.2 days disrupts production scheduling.',impact:'Planning buffer consumed. Emergency sourcing from spot market adds 8–15% cost premium.',timeline:'Reliability has declined from 78% six months ago. Trend is worsening.',confidence:'med',rec:'Vendor scorecard review with all 12 suppliers. Set 80% reliability as minimum threshold with 60-day deadline.'},
+    hyps:[{r:'H1',c:'h2',t:'No reliability minimum threshold enforced',e:'8 vendors below 75% with no formal consequence — reliability erodes without enforcement.'},{r:'H2',c:'h2',t:'Planning buffers not adjusted for poor reliability',e:'MRP planning assumes higher reliability than actuals — schedules unrealistic.'}],
+    fvla:{rev:'—',revS:'Indirect — procurement disruption',cap:'—',capS:'',mar:'8–15% premium on emergency sourcing',marS:'Spot market buys accumulating'},
+    acts:[{t:'Vendor scorecard review — all 12 suppliers',s:'Set 80% reliability threshold · communicate formal requirement'},{t:'Add planning buffer for 8 below-threshold vendors',s:'4.2 day avg delay · adjust MRP lead times in SAP MARC'}]},
 
-  // Function summary nodes for heatmap clicks
+  'P3.13':{name:'Setup Time — Excessive Non-Productive Hours',proc:'Production · Setup · Efficiency',sev:'a',val:'53.6%',impact:'2,168 hrs wasted',
+    what:{meas:[{l:'Setup % of Losses',v:'53.6%',c:'r'},{l:'Total Setup Time',v:'130,075 min',c:'r'},{l:'Target Setup %',v:'<25%',c:'g'}],
+      table:{h:['Machine','Setup (min)','Setup % of Ops','Status'],r:[['HMC01','18,420','62%','Critical'],['HMC02','17,980','61%','Critical'],['VTL06','15,200','48%','High'],['VMC05','13,840','44%','High'],['VTL04','11,320','38%','Warning']],c:['','r','','']}},
+    why:{cause:'Setup consuming 53.6% of all non-productive time — double the industry benchmark. No SMED or pre-staging programme in place.',impact:'2,168 hours of setup waste per period. Each hour recovered = ~₹3,200 additional output capacity.',timeline:'Setup ratio has been above 50% since October 2025. Structural — not a one-off.',confidence:'high',rec:'Initiate SMED programme for top 5 machine-operation combinations. Target: reduce setup to <30% of losses in 60 days.'},
+    hyps:[{r:'H1',c:'h1',t:'No pre-staging discipline — setup at machine',e:'Tools and fixtures staged at machine start instead of pre-shift. Adds 40–60% to setup time.'},{r:'H2',c:'h2',t:'Complex job mix on HMC machines',e:'Heavy casting jobs on HMC01/02 require longer setup — need dedicated setup operators.'}],
+    fvla:{rev:'—',revS:'Indirect — setup waste reduces output',cap:'₹6.9L/period recoverable',capS:'2,168 hrs × ₹3,200/hr capacity value',mar:'0.4% margin recoverable',marS:'Direct overhead in non-productive time'},
+    acts:[{t:'SMED programme — HMC01, HMC02 first',s:'62%, 61% setup ratio · highest impact machines'},{t:'Pre-staging protocol for all shifts',s:'Tools and fixtures ready before shift start — eliminates at-machine setup time'}]},
+
+  // ── NORMAL (2) ────────────────────────────────────────────────────────────
+  'I4.19':{name:'Raw Material Inventory — Excess Hold',proc:'Inventory · Raw Material',sev:'g',val:'₹6L',impact:'Low — manageable',
+    what:{meas:[{l:'Excess Inventory',v:'₹6L',c:'a'},{l:'Coverage vs Plan',v:'+18 days',c:'a'},{l:'Affected SKUs',v:'14 materials',c:'g'}],
+      table:{h:['Material Category','Value','Coverage','Status'],r:[['Castings (raw)','₹2.4L','24 days','Excess'],['Forgings','₹1.8L','19 days','Slight excess'],['Fasteners','₹1.1L','15 days','On plan'],['Others','₹0.7L','12 days','On plan']],c:['','a','','']}},
+    why:{cause:'18 days excess raw material coverage. Likely driven by safety stock built when supply reliability was lower. Now overcorrected.',impact:'₹6L capital locked in excess raw material. Low severity — does not affect production or delivery.',timeline:'Excess build-up over last 6 weeks. No immediate action required.',confidence:'med',rec:'Monitor for 2 periods. If excess persists, adjust safety stock parameters in SAP to release ₹3–4L of locked capital.'},
+    hyps:[{r:'H1',c:'h3',t:'Safety stock parameters set during supply crisis',e:'Excess inventory = overcorrection from earlier supply shortfall period.'},{r:'H2',c:'h3',t:'Demand forecast reduced without stock drawdown',e:'Order book reduced but raw material purchases continued at higher rate.'}],
+    fvla:{rev:'—',revS:'No revenue impact',cap:'₹6L excess',capS:'14 material SKUs · 18 days over plan',mar:'—',marS:''},
+    acts:[{t:'Monitor for 2 periods — no immediate action',s:'₹6L excess · low severity · adjust safety stock if persists'},{t:'Review safety stock parameters for 14 SKUs',s:'SAP MARD · Safety Stock field · align to current demand forecast'}]},
+
+  'D5.09':{name:'Customer Order Pipeline — Stable',proc:'Demand · Order Intake',sev:'g',val:'₹1,193L',impact:'Positive — on track',
+    what:{meas:[{l:'Total Order Book',v:'₹1,193L',c:'g'},{l:'New Orders (Period)',v:'₹85L',c:'g'},{l:'Pipeline Coverage',v:'4.2 months',c:'g'}],
+      table:{h:['Customer','Order Value','New This Period','Status'],r:[['Bonfiglioli','₹843L','₹60L','Strong'],['Toshiba T&D','₹57.8L','₹10L','Stable'],['Sakthi Auto','₹41.5L','₹8L','Growth'],['Others','₹250.7L','₹7L','Steady']],c:['','g','','']}},
+    why:{cause:'Order intake positive — ₹85L new orders this period. 4.2 months of pipeline coverage. Demand side is healthy — constraint is on delivery.',impact:'Positive signal. Risk is that the strong order book cannot be fulfilled given current production constraints.',timeline:'Order book growing steadily over last 3 periods. New customer interest from Sakthi Auto is notable.',confidence:'high',rec:'No revenue action required. Focus on production to deliver existing commitments. Use pipeline strength in supplier negotiations.'},
+    hyps:[{r:'H1',c:'h3',t:'Demand is not the constraint',e:'₹1,193L order book with 4.2 months coverage — supply and production are the binding constraints.'},{r:'H2',c:'h3',t:'Bonfiglioli concentration is a risk, not strength',e:'₹843L in one customer — growing order book increases concentration ratio.'}],
+    fvla:{rev:'₹85L new orders',revS:'Period-on-period intake growth',cap:'—',capS:'',mar:'—',marS:''},
+    acts:[{t:'No demand action required this period',s:'Order book healthy — focus resources on production and supplier reliability'},{t:'Flag Sakthi Auto growth potential to sales team',s:'₹8L new orders this period · growing account · worth protecting'}]},
+
+  // ── FUNCTION SUMMARY NODES (heatmap clicks) ───────────────────────────────
   func_production:{name:'Production Intelligence',proc:'6 active alerts',sev:'r',val:'₹424L',impact:'6 signals firing',
     what:{meas:[{l:'Active Alerts',v:'6',c:'r'},{l:'Revenue at Risk',v:'₹424L',c:'r'},{l:'Machine Efficiency',v:'43.4%',c:'r'}],table:{h:['Signal','Value','Status'],r:[['WO Completion (P3.04)','7.5%','Critical'],['Machine Efficiency (P3.01)','43.4%','Critical'],['Machine Idle Rate (P3.03)','39.1%','Critical'],['Setup Time (P3.13)','53.6%','Warning'],['Unplanned Downtime (P3.09)','3,921 min','Warning']],c:['','r','']}},
     why:{cause:'Machine fleet running at 43.4% efficiency. Setup time consuming 53.6% of all non-productive time. 344 WOs open with only 7.5% completion.',impact:'₹424L revenue at risk. 170 delivery lines overdue. IATF penalty exposure active.',timeline:'Structural — building since October 2025.',confidence:'high',rec:'Two immediate actions: freeze new BTPL WO releases + initiate SMED setup reduction programme.'},
@@ -156,13 +302,13 @@ export const SIGNALS = {
     acts:[{t:'Add MARD and MARC to SAP extract',s:'Required for 18 of 26 inventory signals'}]},
   func_quality:{name:'Quality Intelligence',proc:'No data available',sev:'nd',val:'—',impact:'24 signals pending',
     what:{meas:[{l:'Active Alerts',v:'0',c:'nd'},{l:'Data Status',v:'No QM data',c:'nd'},{l:'Signals Ready',v:'24 pending',c:'nd'}],table:{h:['Data Required','SAP Table','Unlocks'],r:[['Inspection lots','QALS','Q6.01, Q6.02, Q6.04, Q6.15'],['Inspection results','QAMV','Q6.01, Q6.02, Q6.03'],['Defect codes','QMFE','Q6.05, Q6.07, Q6.20'],['Quality notifications','QMEL','Q6.06, Q6.08, Q6.09']],c:['','','']}},
-    why:{cause:'SAP QM module data (QALS, QAMV, QMFE, QMEL) not in current Veejei extract. "Stable" in overview is a data gap — not confirmed clean status.',impact:'24 quality signals completely blind. With OTD at 58.3%, complaint rate is likely non-zero — currently undetected.',timeline:'Data gap exists from initial extract. No quality data has ever been available in this system.',confidence:'low',rec:'Include QALS and QAMV in next SAP data extract as highest priority. Confirm SAP QM module is active at Veejei.'},
-    hyps:[{r:'H1',c:'h1',t:'QM module not included in extract',e:'All quality signals require QALS/QAMV — neither in file.'},{r:'H2',c:'h2',t:'QM module may not be activated',e:'If QM not set up in SAP B1, quality data may only exist in manual records.'}],
+    why:{cause:'SAP QM module data (QALS, QAMV, QMFE, QMEL) not in current Veejei extract.',impact:'24 quality signals completely blind.',timeline:'Data gap exists from initial extract.',confidence:'low',rec:'Include QALS and QAMV in next SAP data extract as highest priority.'},
+    hyps:[{r:'H1',c:'h1',t:'QM module not included in extract',e:'All quality signals require QALS/QAMV — neither in file.'}],
     fvla:{rev:'—',revS:'Cannot assess quality exposure',cap:'—',capS:'',mar:'—',marS:''},
-    acts:[{t:'Include QALS and QAMV in next SAP extract',s:'Unlocks all 24 quality signals — currently completely blind'},{t:'Confirm SAP QM module activation status',s:'Required before extract — may need module activation'}]},
+    acts:[{t:'Include QALS and QAMV in next SAP extract',s:'Unlocks all 24 quality signals'},{t:'Confirm SAP QM module activation status',s:'Required before extract'}]},
   func_maintenance:{name:'Maintenance Intelligence',proc:'2 critical · 3 warnings',sev:'r',val:'3 expired',impact:'Unprotected machines',
     what:{meas:[{l:'Warranty Expired',v:'3',c:'r'},{l:'PM Compliance',v:'85%',c:'a'},{l:'Highest Downtime',v:'VTL06',c:'a'}],table:{h:['Signal','Value','Status'],r:[['Warranty Lapsed (M7.19)','3 machines','Critical'],['Top Downtime (M7.09)','14,793 min','Warning'],['PM Compliance (M7.01)','85%','Warning'],['OEE (M7.07)','No data','No data']],c:['','r','']}},
-    why:{cause:'VTL-14, VTL-15, HMC-02 warranty expired December 2025. Scheduled event not actioned. HMC-02 at 35.9% efficiency is highest breakdown risk.',impact:'Any breakdown on these 3 machines is fully unprotected. HMC-02 stoppage would hit critical production path.',timeline:'99–103 days unprotected as of today.',confidence:'high',rec:'Contact OEM this week. HMC-02 AMC renewal first.'},
+    why:{cause:'VTL-14, VTL-15, HMC-02 warranty expired December 2025. HMC-02 at 35.9% efficiency is highest breakdown risk.',impact:'Any breakdown on these 3 machines is fully unprotected.',timeline:'99–103 days unprotected as of today.',confidence:'high',rec:'Contact OEM this week. HMC-02 AMC renewal first.'},
     hyps:[{r:'H1',c:'h1',t:'AMC renewal not actioned',e:'Three machines lapsed simultaneously — scheduled event not acted on.'}],
     fvla:{rev:'—',revS:'Activates on breakdown',cap:'Full OEM repair unprotected',capS:'₹2–10L per VTL breakdown',mar:'HMC-02 production halt risk',marS:''},
     acts:[{t:'OEM contact for VTL-14, VTL-15, HMC-02',s:'All expired Dec 2025 · 99–103 days unprotected'},{t:'HMC-02 first — lowest efficiency + no cover',s:'35.9% avg efficiency · highest breakdown probability'}]},
@@ -173,4 +319,3 @@ export const RC_ITEMS = [
   {icon:'↑',type:'worse',text:'Machine idle rate increased — No-Operator hours up 8% this week',delta:'+₹18L capital waste'},
   {icon:'⚡',type:'new',text:'New risk — VTL-04 PM task crossed due date',delta:'New · Maintenance'},
 ];
-
