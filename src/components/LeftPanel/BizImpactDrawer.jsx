@@ -93,7 +93,7 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
                       <button
                         className="bid-se-full-btn"
                         style={{ background: sc.accent }}
-                        onClick={() => { onClose(); openPanel(b.sigId, 'what'); }}
+                        onClick={() => { onClose(); openPanel(b.sigId, 'what', card.id); }}
                       >
                         Full Signal →
                       </button>

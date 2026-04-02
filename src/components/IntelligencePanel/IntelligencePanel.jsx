@@ -5,7 +5,8 @@ import IPSkeleton from './IPSkeleton';
 
 export default function IntelligencePanel({
   currentPanelSig, panelMode, activeTab, setActiveTab,
-  SIGNALS, closePanel, togglePanelMode, showToast, followFromChat, setChatInputTrigger
+  SIGNALS, closePanel, togglePanelMode, showToast, followFromChat, setChatInputTrigger,
+  originBizCard, onBackToBiz
 }) {
   const [contentKey, setContentKey] = useState(0);
   const [headerFlash, setHeaderFlash] = useState(false);
@@ -82,6 +83,8 @@ export default function IntelligencePanel({
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         headerFlash={headerFlash}
+        originBizCard={originBizCard}
+        onBackToBiz={onBackToBiz}
       />
 
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>

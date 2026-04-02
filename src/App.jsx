@@ -34,6 +34,7 @@ export default function App() {
 
   // Biz Impact Drawer state — lifted to App so it renders outside LeftPanel's transform
   const [activeBizCard, setActiveBizCard] = useState(null);
+  const [originBizCard, setOriginBizCard] = useState(null); // Track where the user came from
 
   // Watchlist state
   const [watchlist, setWatchlist] = useState(() => {
@@ -58,8 +59,10 @@ export default function App() {
     setTimeout(() => setToastMsg(null), 2800);
   };
 
-  const openPanel = (sigId, tab = 'what') => {
+  const openPanel = (sigId, tab = 'what', originId = null) => {
+    console.log('DRIVING_PANEL:', { sigId, tab, originId });
     setActiveBizCard(null);
+    setOriginBizCard(originId);
     setCurrentPanelSig(sigId);
     setPanelTab(tab);
     setPanelMode('expanded');
@@ -67,6 +70,7 @@ export default function App() {
 
   const handleOpenBizCard = (cardId) => {
     setPanelMode('hidden');
+    setOriginBizCard(null); // Clear origin when explicitly opening a card
     setActiveBizCard(cardId);
   };
 
@@ -207,10 +211,11 @@ export default function App() {
             cardId={activeBizCard}
             SIGNALS={SIGNALS}
             onClose={() => setActiveBizCard(null)}
-            openPanel={(sigId, tab) => { setActiveBizCard(null); openPanel(sigId, tab); }}
+            openPanel={(sigId, tab, originId) => { setActiveBizCard(null); openPanel(sigId, tab, originId); }}
           />
         ) : (
           <IntelligencePanel
+            key={`${currentPanelSig}-${originBizCard}`}
             currentPanelSig={currentPanelSig}
             panelMode={panelMode}
             activeTab={panelTab}
@@ -221,6 +226,8 @@ export default function App() {
             showToast={showToast}
             followFromChat={followFromChat}
             setChatInputTrigger={setChatInputTrigger}
+            originBizCard={originBizCard}
+            onBackToBiz={handleOpenBizCard}
           />
         )}
         
