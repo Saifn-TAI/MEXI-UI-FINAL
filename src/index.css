@@ -5835,12 +5835,31 @@ body {
 .bid-body::-webkit-scrollbar { width: 3px; }
 .bid-body::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
 
+.bid-body-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .bid-section-label {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--ink-4);
+}
+
+.bid-status-count {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--bd-2);
+  border-radius: var(--r-sm);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: .02em;
 }
 
 .bid-signal-list {

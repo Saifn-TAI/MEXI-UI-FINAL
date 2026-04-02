@@ -59,9 +59,15 @@ export default function App() {
   };
 
   const openPanel = (sigId, tab = 'what') => {
+    setActiveBizCard(null);
     setCurrentPanelSig(sigId);
     setPanelTab(tab);
     setPanelMode('expanded');
+  };
+
+  const handleOpenBizCard = (cardId) => {
+    setPanelMode('hidden');
+    setActiveBizCard(cardId);
   };
 
   const closePanel = () => {
@@ -111,7 +117,7 @@ export default function App() {
 
   // Calculate left/right panel widths for shell layout
   const leftW = leftPanelOpen ? '340px' : '0px';
-  const rightW = panelMode === 'expanded' ? '480px' : '0px';
+  const rightW = (panelMode === 'expanded' || activeBizCard) ? '480px' : '0px';
 
   if (authStatus === 'login') {
     return (
@@ -154,7 +160,7 @@ export default function App() {
 
   return (
     <>
-      <div className={`shell ${!leftPanelOpen ? 'no-panel' : ''} ${panelMode === 'expanded' ? 'panel-expanded' : ''}`} id="shell" style={dashboardStyle}>
+      <div className={`shell ${!leftPanelOpen ? 'no-panel' : ''} ${(panelMode === 'expanded' || activeBizCard) ? 'panel-expanded' : ''}`} id="shell" style={dashboardStyle}>
 
         <Topbar
           leftPanelOpen={leftPanelOpen}
@@ -178,7 +184,7 @@ export default function App() {
           showToast={showToast}
           openBrief={() => { setShowExecBrief(true); showToast('Opening Executive Brief...'); }}
           openAllSignalsPanel={() => setAllSignalsOpen(true)}
-          openBizCard={(cardId) => setActiveBizCard(cardId)}
+          openBizCard={handleOpenBizCard}
           watchlist={watchlist}
           unfollowEntity={unfollowEntity}
         />
@@ -195,19 +201,29 @@ export default function App() {
           />
         </main>
 
-        <IntelligencePanel
-          currentPanelSig={currentPanelSig}
-          panelMode={panelMode}
-          activeTab={panelTab}
-          setActiveTab={setPanelTab}
-          SIGNALS={SIGNALS}
-          closePanel={closePanel}
-          togglePanelMode={togglePanelMode}
-          showToast={showToast}
-          followFromChat={followFromChat}
-          setChatInputTrigger={setChatInputTrigger}
-        />
-
+        {/* Dynamic Right Panel Space */}
+        {activeBizCard ? (
+          <BizImpactDrawer
+            cardId={activeBizCard}
+            SIGNALS={SIGNALS}
+            onClose={() => setActiveBizCard(null)}
+            openPanel={(sigId, tab) => { setActiveBizCard(null); openPanel(sigId, tab); }}
+          />
+        ) : (
+          <IntelligencePanel
+            currentPanelSig={currentPanelSig}
+            panelMode={panelMode}
+            activeTab={panelTab}
+            setActiveTab={setPanelTab}
+            SIGNALS={SIGNALS}
+            closePanel={closePanel}
+            togglePanelMode={togglePanelMode}
+            showToast={showToast}
+            followFromChat={followFromChat}
+            setChatInputTrigger={setChatInputTrigger}
+          />
+        )}
+        
         <ExecBriefModal />
       </div>
 
@@ -217,15 +233,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Biz Impact Drawer — rendered at root level to escape LeftPanel's CSS transform */}
-      {activeBizCard && (
-        <BizImpactDrawer
-          cardId={activeBizCard}
-          SIGNALS={SIGNALS}
-          onClose={() => setActiveBizCard(null)}
-          openPanel={(sigId, tab) => { setActiveBizCard(null); openPanel(sigId, tab); }}
-        />
-      )}
+      {/* Removed BizImpactDrawer from overlay level */}
 
       {/* OVERLAYS */}
       <AllSignalsOverlay

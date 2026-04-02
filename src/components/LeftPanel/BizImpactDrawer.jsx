@@ -15,52 +15,51 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
   const headerColor = colorMap[card.color] || colorMap['r'];
 
   return (
-    <div className="bid-overlay" onClick={onClose}>
-      <div className="bid-drawer" onClick={e => e.stopPropagation()}>
-
-        {/* ── HEADER ── */}
-        <div className="bid-header" style={{ borderTop: `3px solid ${headerColor.accent}` }}>
-          <div className="bid-header-top">
-            <div>
-              <div className="bid-eyebrow">Business Impact · Contributing Signals</div>
-              <div className="bid-title">{card.label}</div>
-              <div className="bid-total-note">{card.totalNote}</div>
-            </div>
-            <button className="bid-close" onClick={onClose}>✕</button>
+    <div className="intel-panel" id="intel-panel" style={{ borderLeft: '1px solid var(--bd-2)' }}>
+      {/* ── HEADER ── */}
+      <div className="bid-header" style={{ borderTop: `3px solid ${headerColor.accent}`, flexShrink: 0 }}>
+        <div className="bid-header-top">
+          <div>
+            <div className="bid-eyebrow">BUSINESS IMPACT ANALYSIS</div>
+            <div className="bid-title">{card.label}</div>
           </div>
-
-          {/* KPI strip */}
-          <div className="bid-kpi-strip">
-            <div className="bid-kpi-main">
-              <span className="bid-kpi-val" style={{ color: headerColor.accent }}>{card.value}</span>
-              <span className="bid-kpi-delta" style={{ color: headerColor.accent, background: headerColor.bg, border: `1px solid ${headerColor.bd}` }}>
-                {card.delta}
-              </span>
-            </div>
-            <div className="bid-key-metrics">
-              {card.keyMetrics.map((m, i) => (
-                <div key={i} className="bid-metric-chip">
-                  <span className="bid-metric-l">{m.l}</span>
-                  <span className={`bid-metric-v ${m.c}`}>{m.v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <button className="bid-close" onClick={onClose}>✕</button>
         </div>
 
-        {/* ── BODY ── */}
-        <div className="bid-body">
+        {/* KPI strip */}
+        <div className="bid-kpi-strip">
+          <div className="bid-kpi-main">
+            <span className="bid-kpi-val" style={{ color: headerColor.accent }}>{card.value}</span>
+            <span className="bid-kpi-delta" style={{ color: headerColor.accent, background: headerColor.bg, border: `1px solid ${headerColor.bd}` }}>
+              {card.delta}
+            </span>
+          </div>
+        </div>
+      </div>
 
-          {/* Contributing signals breakdown */}
-          <div className="bid-section-label">Signal Breakdown</div>
-          <div className="bid-signal-list">
-            {card.breakdown.map((b, idx) => {
-              const sig = SIGNALS[b.sigId];
-              const sc = colorMap[b.sev] || colorMap['a'];
-              const isActive = activeSignal === b.sigId;
-              return (
+      {/* ── BODY ── */}
+      <div className="bid-body" style={{ flex: 1, overflowY: 'auto' }}>
+
+        {(() => {
+          const totalSignals = card.breakdown.length;
+          return (
+            <div className="bid-body-top-row">
+              <div className="bid-section-label">Signal Breakdown</div>
+              <div className="bid-status-count">
+                {totalSignals} {totalSignals === 1 ? 'Signal' : 'Signals'}
+              </div>
+            </div>
+          );
+        })()}
+
+        <div className="bid-signal-list">
+          {card.breakdown.map((b, idx) => {
+            const sig = SIGNALS[b.sigId];
+            const sc = colorMap[b.sev] || colorMap['a'];
+            const isActive = activeSignal === b.sigId;
+            return (
+              <React.Fragment key={b.sigId}>
                 <div
-                  key={b.sigId}
                   className={`bid-sig-row ${isActive ? 'active' : ''}`}
                   onClick={() => setActiveSignal(isActive ? null : b.sigId)}
                 >
@@ -82,60 +81,56 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
                     <div className="bid-sig-chevron">{isActive ? '▲' : '▼'}</div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Expanded signal quick-view */}
-          {activeSignal && SIGNALS[activeSignal] && (() => {
-            const s = SIGNALS[activeSignal];
-            const sc = colorMap[s.sev] || colorMap['a'];
-            return (
-              <div className="bid-sig-expand" style={{ borderColor: sc.bd, background: sc.bg }}>
-                <div className="bid-se-header">
-                  <div>
-                    <div className="bid-se-id" style={{ color: sc.accent }}>SIGNAL INTELLIGENCE</div>
-                    <div className="bid-se-name">{s.name}</div>
-                  </div>
-                  <button
-                    className="bid-se-full-btn"
-                    style={{ background: sc.accent }}
-                    onClick={() => { onClose(); openPanel(activeSignal, 'what'); }}
-                  >
-                    Full Signal →
-                  </button>
-                </div>
-                <div className="bid-se-why">{s.why?.cause}</div>
-                <div className="bid-se-meas">
-                  {(s.what?.meas || []).map((m, i) => (
-                    <div key={i} className="bid-se-meas-chip">
-                      <span className="bid-sem-l">{m.l}</span>
-                      <span className={`bid-sem-v ${m.c}`}>{m.v}</span>
+                {/* Expanded signal quick-view directly after the row */}
+                {isActive && sig && (
+                  <div className="bid-sig-expand" style={{ borderColor: sc.bd, background: sc.bg, marginBottom: '6px', marginTop: '-4px' }}>
+                    <div className="bid-se-header">
+                      <div>
+                        <div className="bid-se-id" style={{ color: sc.accent }}>SIGNAL INTELLIGENCE</div>
+                        <div className="bid-se-name">{sig.name}</div>
+                      </div>
+                      <button
+                        className="bid-se-full-btn"
+                        style={{ background: sc.accent }}
+                        onClick={() => { onClose(); openPanel(b.sigId, 'what'); }}
+                      >
+                        Full Signal →
+                      </button>
                     </div>
-                  ))}
-                </div>
-                {s.acts?.[0] && (
-                  <div className="bid-se-action">
-                    <span className="bid-se-action-label">Top Action:</span> {s.acts[0].t}
+                    <div className="bid-se-why">{sig.why?.cause}</div>
+                    <div className="bid-se-meas">
+                      {(sig.what?.meas || []).map((m, i) => (
+                        <div key={i} className="bid-se-meas-chip">
+                          <span className="bid-sem-l">{m.l}</span>
+                          <span className={`bid-sem-v ${m.c}`}>{m.v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {sig.acts?.[0] && (
+                      <div className="bid-se-action">
+                        <span className="bid-se-action-label">Top Action:</span> {sig.acts[0].t}
+                      </div>
+                    )}
                   </div>
                 )}
-              </div>
+              </React.Fragment>
             );
-          })()}
+          })}
+        </div>
 
-          {/* Summary note */}
-          {card.summaryNote && (
-            <div className="bid-summary-note">
-              <span className="bid-note-icon">ℹ</span>
-              {card.summaryNote}
-            </div>
-          )}
-
-          {/* Top recommended action */}
-          <div className="bid-top-action">
-            <div className="bid-ta-label">Recommended First Action</div>
-            <div className="bid-ta-text">{card.topAction}</div>
+        {/* Summary note */}
+        {card.summaryNote && (
+          <div className="bid-summary-note">
+            <span className="bid-note-icon">ℹ</span>
+            {card.summaryNote}
           </div>
+        )}
+
+        {/* Top recommended action */}
+        <div className="bid-top-action">
+          <div className="bid-ta-label">Recommended First Action</div>
+          <div className="bid-ta-text">{card.topAction}</div>
         </div>
       </div>
     </div>

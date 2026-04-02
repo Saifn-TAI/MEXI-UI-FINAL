@@ -19,29 +19,29 @@ export default function IntelligencePanel({
     // If panel is closed
     if (panelMode === 'hidden') {
       prevModeRef.current = 'hidden';
-      // Do not clear activeSig immediately to prevent visual jump while closing
+      prevSigRef.current = null;
+      setActiveSig(null);
       return;
     }
 
     // Panel is opened 
     if (!currentPanelSig) return;
 
-    const justOpened = prevModeRef.current === 'hidden' && panelMode === 'expanded';
     const sigChanged = prevSigRef.current !== currentPanelSig;
+    const modeChanged = prevModeRef.current === 'hidden';
 
-    // Trigger loading sequence IF it just opened OR the signal changed
-    if (justOpened || sigChanged) {
+    // Trigger loading sequence IF it just opened OR the signal changed OR if we were showing a biz card before
+    if (modeChanged || sigChanged || !activeSig) {
       setIsLoading(true);
       setHeaderFlash(false);
       
-      // Delay to simulate "fetching" and allow panel slide animation to start before content pops in
-      const loadDelay = justOpened ? 250 : 150; 
+      const loadDelay = modeChanged ? 250 : 150; 
       
       const timer1 = setTimeout(() => {
         setActiveSig(currentPanelSig);
-        setContentKey(k => k + 1); // trigger remount animations
+        setContentKey(k => k + 1); 
         setIsLoading(false);
-        if (sigChanged && !justOpened) setHeaderFlash(true); // highlight header only when switching signals
+        if (sigChanged && !modeChanged) setHeaderFlash(true);
       }, loadDelay);
 
       const timer2 = setTimeout(() => {
@@ -49,11 +49,11 @@ export default function IntelligencePanel({
       }, 800 + loadDelay);
 
       prevSigRef.current = currentPanelSig;
-      prevModeRef.current = panelMode;
+      prevModeRef.current = 'expanded';
 
       return () => { clearTimeout(timer1); clearTimeout(timer2); };
     }
-  }, [currentPanelSig, panelMode]);
+  }, [currentPanelSig, panelMode, activeSig]);
 
   // Use activeSig for rendering content. If loading or no active sig, use currentPanelSig for header to show title immediately
   const renderSigId = activeSig || currentPanelSig; 
