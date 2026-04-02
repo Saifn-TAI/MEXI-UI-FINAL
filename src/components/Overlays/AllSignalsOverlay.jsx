@@ -22,12 +22,12 @@ export function AllSignalsOverlay({ isOpen, onClose, roleData, SIGNALS, openPane
         <div className="asp-hdr">
           <div className="asp-hdr-left">
             <div className="asp-title">All Signals</div>
-            <div className="asp-subtitle">
-              <span style={{ color: 'var(--critical)', fontWeight: 700 }}>{critCount} critical</span>
-              <span style={{ color: 'var(--ink-4)', margin: '0 6px' }}>·</span>
-              <span style={{ color: 'var(--warn)', fontWeight: 600 }}>{warnCount} warning</span>
-              <span style={{ color: 'var(--ink-4)', margin: '0 6px' }}>·</span>
-              <span style={{ color: 'var(--normal)', fontWeight: 600 }}>{normCount} normal</span>
+            <div className="asp-subtitle" style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em' }}>
+              <span style={{ color: '#FF3B30', fontWeight: 800 }}>{critCount} critical</span>
+              <span style={{ color: 'var(--ink-4)', margin: '0 8px' }}>·</span>
+              <span style={{ color: '#FF9F0A', fontWeight: 700 }}>{warnCount} warning</span>
+              <span style={{ color: 'var(--ink-4)', margin: '0 8px' }}>·</span>
+              <span style={{ color: '#30D158', fontWeight: 700 }}>{normCount} normal</span>
             </div>
           </div>
           <div className="asp-close" onClick={onClose}>✕</div>

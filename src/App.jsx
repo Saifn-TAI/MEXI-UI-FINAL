@@ -60,9 +60,8 @@ export default function App() {
   };
 
   const openPanel = (sigId, tab = 'what', originId = null) => {
-    console.log('DRIVING_PANEL:', { sigId, tab, originId });
     setActiveBizCard(null);
-    setOriginBizCard(originId);
+    setOriginBizCard(originId); // explicitly set origin (null for direct clicks)
     setCurrentPanelSig(sigId);
     setPanelTab(tab);
     setPanelMode('expanded');

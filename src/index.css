@@ -1141,11 +1141,10 @@ body {
 .hmc:hover:not(.locked) {
   box-shadow: var(--float-sm)
 }
-}
 
 .hmc.red {
-  background: var(--critical-bg);
-  border-color: var(--critical-bd)
+  background: #FFF4F1 !important;
+  border-color: #FDB4A0 !important;
 }
 
 .hmc.amber {

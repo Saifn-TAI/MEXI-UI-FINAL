@@ -5,24 +5,26 @@ export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, f
   const originCard = BIZ_IMPACT_CARDS.find(c => c.id === originBizCard);
   return (
     <div className={`ip-hdr ${headerFlash ? 'ip-hdr-flash' : ''}`}>
-      <div className="ip-hdr-top">
+      <div className="ip-hdr-top" style={{ alignItems: originCard ? 'center' : 'flex-start' }}>
         <div className="ip-hdr-left">
-          {originCard && (
+          {originCard ? (
             <div className="ip-breadcrumb-icon" onClick={() => onBackToBiz(originCard.id)} title={`Back to ${originCard.label}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
             </div>
+          ) : (
+            <div className="ip-sig-name" style={{ marginBottom: '6px' }}>{sig.name}</div>
           )}
         </div>
-        <div className="ip-hdr-actions">
+        <div className="ip-hdr-actions" style={{ marginTop: originCard ? '0' : '4px' }}>
           <div className="ip-expand-btn" onClick={togglePanelMode} title="Expand">⤢</div>
           <div className="ip-close-btn" onClick={closePanel} title="Close">✕</div>
         </div>
       </div>
 
       <div className="ip-hdr-content">
-        <div className="ip-sig-name">{sig.name}</div>
+        {originCard && <div className="ip-sig-name" style={{ marginBottom: '8px' }}>{sig.name}</div>}
         <div className="ip-badge-row">
           <span className={`ip-badge ${badgeCls}`}>{badgeLabel}</span>
           <span className="ip-badge p">{sig.proc.split('·')[1]?.trim() || sig.proc.split('·')[0].trim()}</span>
