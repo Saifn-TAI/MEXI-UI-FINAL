@@ -36,16 +36,17 @@ const TypewriterText = ({ text, isLatest }) => {
   );
 };
 
-export default function ChatMessages({ messages, isTyping, msgsRef, openPanel, followFromChat, SIGNALS }) {
+export default function ChatMessages({ messages, isTyping, msgsRef, openPanel, followFromChat, SIGNALS, greetingFirstName }) {
   const h = new Date().getHours();
   const greeting = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  const who = greetingFirstName?.trim() || '—';
 
   return (
     <div className="msgs-wrap" ref={msgsRef} style={{flex:1, overflowY:'auto', padding:0, background:'var(--canvas)'}}>
       <div className="msgs-inner" style={{minHeight:'100%', padding:'0 0 10px'}}>
         {messages.length === 0 && (
           <div className="chat-welcome">
-            <div className="cw-greeting">{greeting}, Alagan</div>
+            <div className="cw-greeting">{greeting}, {who}</div>
             <div className="cw-sub">What's on your mind today?</div>
           </div>
         )}

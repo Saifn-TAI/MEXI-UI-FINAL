@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function IPImpactTab({ sig }) {
-  const f = sig.fvla;
+  const f = sig?.fvla && typeof sig.fvla === 'object' ? sig.fvla : { rev: '—', revS: '', cap: '—', capS: '', mar: '—', marS: '' };
   return (
     <>
       <div className="ip-section-lbl">FVLA — Financial Impact</div>

@@ -1,11 +1,13 @@
 import React from 'react';
 
 export default function IPWhatTab({ sig }) {
-  const measHtml = sig.what.meas.map((m, i) => (
+  const what = sig?.what && typeof sig.what === 'object' ? sig.what : {};
+  const meas = Array.isArray(what.meas) && what.meas.length ? what.meas : [{ l: '—', v: '—', c: 'g' }];
+  const measHtml = meas.map((m, i) => (
     <div key={i} className="ip-meas-tile"><div className="ip-meas-lbl">{m.l}</div><div className={`ip-meas-val ${m.c}`}>{m.v}</div></div>
   ));
 
-  const t = sig.what.table;
+  const t = what.table;
   const tblHtml = t ? (
     <>
       <div className="ip-section-lbl">Evidence Data</div>

@@ -6,7 +6,7 @@ import IPSkeleton from './IPSkeleton';
 export default function IntelligencePanel({
   currentPanelSig, panelMode, activeTab, setActiveTab,
   SIGNALS, closePanel, togglePanelMode, showToast, followFromChat, setChatInputTrigger,
-  originBizCard, onBackToBiz
+  originBizCard, onBackToBiz, bizImpactCards, askChips,
 }) {
   const [contentKey, setContentKey] = useState(0);
   const [headerFlash, setHeaderFlash] = useState(false);
@@ -85,6 +85,7 @@ export default function IntelligencePanel({
         headerFlash={headerFlash}
         originBizCard={originBizCard}
         onBackToBiz={onBackToBiz}
+        bizImpactCards={bizImpactCards}
       />
 
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
@@ -100,6 +101,7 @@ export default function IntelligencePanel({
             followFromChat={followFromChat}
             setActiveTab={setActiveTab}
             setChatInputTrigger={setChatInputTrigger}
+            askChips={askChips}
           />
         )}
       </div>

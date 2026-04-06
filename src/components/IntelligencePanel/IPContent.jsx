@@ -5,7 +5,7 @@ import IPImpactTab from './IPImpactTab';
 import IPActionsTab from './IPActionsTab';
 import IPAskTab from './IPAskTab';
 
-export default function IPContent({ activeTab, sig, currentPanelSig, showToast, followFromChat, setActiveTab, setChatInputTrigger }) {
+export default function IPContent({ activeTab, sig, currentPanelSig, showToast, followFromChat, setActiveTab, setChatInputTrigger, askChips }) {
   return (
     <div className="ip-body">
       {activeTab === 'what' && <IPWhatTab sig={sig} />}
@@ -25,7 +25,7 @@ export default function IPContent({ activeTab, sig, currentPanelSig, showToast, 
           sig={sig} 
           currentPanelSig={currentPanelSig} 
           showToast={showToast} 
-          setChatInputTrigger={setChatInputTrigger}
+          askChips={askChips}
         />
       )}
     </div>

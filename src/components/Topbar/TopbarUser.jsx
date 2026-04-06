@@ -1,7 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './TopbarUser.css';
 
-export default function TopbarUser({ roleData, showToast, openSettings, openProfile, onSignOut }) {
+function avatarFromProfile(engineProfile) {
+  if (engineProfile?.initials) return engineProfile.initials;
+  const n = engineProfile?.displayName?.trim();
+  if (!n) return '—';
+  const parts = n.split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+export default function TopbarUser({ showToast, openSettings, openProfile, onSignOut, engineProfile }) {
+  const displayName = engineProfile?.displayName?.trim() || '—';
+  const roleLine = engineProfile?.roleLabel?.trim() || '—';
+  const av = avatarFromProfile(engineProfile);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -21,8 +33,8 @@ export default function TopbarUser({ roleData, showToast, openSettings, openProf
       
       <div className="tb-user-container" ref={dropdownRef}>
         <div className="tb-usr" onClick={() => setDropdownOpen(!dropdownOpen)}>
-          <div><span className="tb-uname" id="tb-uname">Alagan S.</span><span className="tb-urole" id="tb-urole">{roleData?.urole || 'Chief Executive Officer'}</span></div>
-          <div className="tb-av" id="tb-av">{roleData?.uav || 'CE'}</div>
+          <div><span className="tb-uname" id="tb-uname">{displayName}</span><span className="tb-urole" id="tb-urole">{roleLine}</span></div>
+          <div className="tb-av" id="tb-av">{av}</div>
         </div>
 
         <div className={`tb-user-dropdown ${dropdownOpen ? 'show' : ''}`}>

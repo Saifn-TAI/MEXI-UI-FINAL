@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { BIZ_IMPACT_CARDS } from '../../data/mockData';
 
-export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel }) {
+export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel, bizImpactCards }) {
   const [activeSignal, setActiveSignal] = useState(null);
-  const card = BIZ_IMPACT_CARDS.find(c => c.id === cardId);
+  const card = (bizImpactCards || []).find(c => c.id === cardId);
   if (!card) return null;
 
   const colorMap = {
@@ -41,7 +40,10 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
       <div className="bid-body" style={{ flex: 1, overflowY: 'auto' }}>
 
         {(() => {
-          const totalSignals = card.breakdown.length;
+          const totalSignals =
+            card.signalCount != null && Number.isFinite(Number(card.signalCount))
+              ? Math.max(0, Math.floor(Number(card.signalCount)))
+              : card.breakdown.length;
           return (
             <div className="bid-body-top-row">
               <div className="bid-section-label">Signal Breakdown</div>
@@ -54,11 +56,12 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
 
         <div className="bid-signal-list">
           {card.breakdown.map((b, idx) => {
-            const sig = SIGNALS[b.sigId];
+            const rowKey = b.sigId != null && String(b.sigId) !== '' ? String(b.sigId) : `row-${idx}`;
+            const sig = b.sigId != null ? SIGNALS[b.sigId] : null;
             const sc = colorMap[b.sev] || colorMap['a'];
             const isActive = activeSignal === b.sigId;
             return (
-              <React.Fragment key={b.sigId}>
+              <React.Fragment key={rowKey}>
                 <div
                   className={`bid-sig-row ${isActive ? 'active' : ''}`}
                   onClick={() => setActiveSignal(isActive ? null : b.sigId)}
@@ -68,7 +71,7 @@ export default function BizImpactDrawer({ cardId, SIGNALS, onClose, openPanel })
                       #{idx + 1}
                     </div>
                     <div className="bid-sig-info">
-                      <div className="bid-sig-name">{sig?.name || b.sigId}</div>
+                      <div className="bid-sig-name">{sig?.name || b.label || b.sigId || '—'}</div>
                       <div className="bid-sig-desc">{b.label}</div>
                     </div>
                   </div>

@@ -1,8 +1,15 @@
 import React from 'react';
 
-export default function PrioritySignalStack({ roleData, SIGNALS, openPanel, openAllSignalsPanel }) {
-  const sigOrder = roleData?.sigOrder || [];
-  const allSigs = sigOrder.filter(id => SIGNALS[id] && !id.startsWith('func_'));
+function resolveSidebarSigOrder(sigOrderProp, roleData, SIGNALS) {
+  const primary =
+    sigOrderProp && sigOrderProp.length ? sigOrderProp : roleData?.sigOrder || [];
+  if (primary && primary.length) return primary;
+  return Object.keys(SIGNALS || {}).filter((id) => !id.startsWith('func_'));
+}
+
+export default function PrioritySignalStack({ roleData, sigOrder: sigOrderProp, SIGNALS, openPanel, openAllSignalsPanel }) {
+  const sigOrder = resolveSidebarSigOrder(sigOrderProp, roleData, SIGNALS);
+  const allSigs = sigOrder.filter((id) => SIGNALS[id] && !id.startsWith('func_'));
 
   // Count by severity across full signal set
   const critSigs = allSigs.filter(id => SIGNALS[id]?.sev === 'r');

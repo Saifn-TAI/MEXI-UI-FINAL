@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import './Login.css';
 import logo from '../../assets/logo.png';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const isValidGmail = (val) => {
-    return /^[a-zA-Z0-9._%+\-]+@gmail\.com$/i.test(val.trim());
-  };
+  const isValidEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
 
-  const doLogin = () => {
+  const doLogin = async () => {
     setErrorMsg('');
 
     if (!email) {
-      setErrorMsg('Please enter your Gmail address.');
+      setErrorMsg('Please enter your email address.');
       return;
     }
-    if (!isValidGmail(email)) {
-      setErrorMsg('Please enter a valid Gmail address (e.g. you@gmail.com).');
+    if (!isValidEmail(email)) {
+      setErrorMsg('Please enter a valid email address.');
       return;
     }
     if (!password || password.length < 1) {
@@ -30,11 +30,14 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
     }
 
     setIsLoading(true);
-
-    setTimeout(() => {
+    try {
+      const result = await login({ email, password });
+      onLoginSuccess(result.email || email.trim());
+    } catch (e) {
+      setErrorMsg(e?.message || 'Sign in failed. Please try again.');
+    } finally {
       setIsLoading(false);
-      onLoginSuccess(email);
-    }, 1200 + Math.random() * 400);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -73,7 +76,7 @@ export default function LoginPage({ onLoginSuccess, onGoToSignup }) {
               className="login-input"
               id="login-email"
               type="email"
-              placeholder="you@gmail.com"
+              placeholder="you@company.com"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

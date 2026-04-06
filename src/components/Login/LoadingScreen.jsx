@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './Login.css';
 import logo from '../../assets/logo.png';
 
-export default function LoadingScreen({ onLoadingComplete, loadingTexts: propsLoadingTexts }) {
+export default function LoadingScreen({
+  onLoadingComplete,
+  loadingTexts: propsLoadingTexts,
+  /** When true, no auto-redirect — parent unmounts this screen after e.g. session verify */
+  controlled = false,
+}) {
   const [textIndex, setTextIndex] = useState(0);
   
   const loadingTexts = propsLoadingTexts || [
@@ -18,17 +23,20 @@ export default function LoadingScreen({ onLoadingComplete, loadingTexts: propsLo
     const textInterval = setInterval(() => {
       setTextIndex((prev) => (prev + 1 < loadingTexts.length ? prev + 1 : prev));
     }, 600);
-    
-    // Auto complete loading after a set duration
+
+    if (controlled) {
+      return () => clearInterval(textInterval);
+    }
+
     const completeTimeout = setTimeout(() => {
-      onLoadingComplete();
+      onLoadingComplete?.();
     }, 3200);
 
     return () => {
       clearInterval(textInterval);
       clearTimeout(completeTimeout);
     };
-  }, [onLoadingComplete, loadingTexts.length]);
+  }, [controlled, onLoadingComplete, loadingTexts.length]);
 
   return (
     <div id="loading-screen">

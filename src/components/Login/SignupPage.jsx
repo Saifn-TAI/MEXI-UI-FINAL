@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './Login.css';
 import logo from '../../assets/logo.png';
+import { useAuth } from '../../context/AuthContext.jsx';
 
-export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
+export default function SignupPage({ onSignupSuccess, onGoToLogin, onRegistered }) {
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     fullName: '',
@@ -24,7 +26,7 @@ export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const doSignup = () => {
+  const doSignup = async () => {
     setErrorMsg('');
 
     if (!formData.username || !formData.fullName || !formData.email || !formData.phone || !formData.company || !formData.password || !formData.retypePassword) {
@@ -45,11 +47,19 @@ export default function SignupPage({ onSignupSuccess, onGoToLogin }) {
     }
 
     setIsLoading(true);
-
-    setTimeout(() => {
+    try {
+      const result = await signup(formData);
+      if (result.autoLoggedIn) {
+        onSignupSuccess(result.email || formData.email);
+      } else {
+        onRegistered?.();
+        onGoToLogin();
+      }
+    } catch (e) {
+      setErrorMsg(e?.message || 'Sign up failed. Please try again.');
+    } finally {
       setIsLoading(false);
-      onSignupSuccess(formData.email);
-    }, 1500 + Math.random() * 500);
+    }
   };
 
   const handleKeyDown = (e) => {

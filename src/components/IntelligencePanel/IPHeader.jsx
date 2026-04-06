@@ -1,8 +1,7 @@
 import React from 'react';
-import { BIZ_IMPACT_CARDS } from '../../data/mockData';
 
-export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, formatId, togglePanelMode, closePanel, activeTab, setActiveTab, headerFlash, originBizCard, onBackToBiz }) {
-  const originCard = BIZ_IMPACT_CARDS.find(c => c.id === originBizCard);
+export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, formatId, togglePanelMode, closePanel, activeTab, setActiveTab, headerFlash, originBizCard, onBackToBiz, bizImpactCards }) {
+  const originCard = (bizImpactCards || []).find(c => c.id === originBizCard);
   return (
     <div className={`ip-hdr ${headerFlash ? 'ip-hdr-flash' : ''}`}>
       <div className="ip-hdr-top" style={{ alignItems: originCard ? 'center' : 'flex-start' }}>
@@ -27,7 +26,7 @@ export default function IPHeader({ sig, currentPanelSig, badgeCls, badgeLabel, f
         {originCard && <div className="ip-sig-name" style={{ marginBottom: '8px' }}>{sig.name}</div>}
         <div className="ip-badge-row">
           <span className={`ip-badge ${badgeCls}`}>{badgeLabel}</span>
-          <span className="ip-badge p">{sig.proc.split('·')[1]?.trim() || sig.proc.split('·')[0].trim()}</span>
+          <span className="ip-badge p">{(sig.proc || '').split('·')[1]?.trim() || (sig.proc || '').split('·')[0]?.trim() || '—'}</span>
           <span className="ip-badge" style={{color:'var(--ink-2)', background:'var(--canvas)', borderColor:'var(--bd-2)'}}>{sig.val}</span>
         </div>
       </div>

@@ -5252,13 +5252,19 @@ body {
   color: var(--primary-dark)
 }
 
+.lp-bc-val.g {
+  color: var(--primary-mid)
+}
+
 .lp-bc-delta {
   font-family: var(--f-body);
   font-size: 10px;
   font-weight: 600;
   padding: 2px 7px;
   border-radius: var(--r-pill);
-  display: inline-flex
+  display: inline-flex;
+  align-items: center;
+  gap: 4px
 }
 
 .lp-bd-r {
@@ -6341,4 +6347,4 @@ body {
   gap: 10px;
   padding: 12px 20px;
   background: var(--canvas);
-}
+}
